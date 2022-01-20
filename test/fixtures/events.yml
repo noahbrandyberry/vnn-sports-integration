@@ -1,0 +1,41 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  name: MyString
+  event_type: MyString
+  start: 2022-01-20 02:46:51
+  tba: false
+  result_type: MyString
+  conference: false
+  scrimmage: false
+  location_verified: false
+  private_notes: MyText
+  public_notes: MyText
+  bus_dismissal_datetime_local: 2022-01-20 02:46:51
+  bus_departure_datetime_local: 2022-01-20 02:46:51
+  bus_return_datetime_local: 2022-01-20 02:46:51
+  home: false
+  canceled: false
+  postponed: false
+  location: one
+  host_team: one
+
+two:
+  name: MyString
+  event_type: MyString
+  start: 2022-01-20 02:46:51
+  tba: false
+  result_type: MyString
+  conference: false
+  scrimmage: false
+  location_verified: false
+  private_notes: MyText
+  public_notes: MyText
+  bus_dismissal_datetime_local: 2022-01-20 02:46:51
+  bus_departure_datetime_local: 2022-01-20 02:46:51
+  bus_return_datetime_local: 2022-01-20 02:46:51
+  home: false
+  canceled: false
+  postponed: false
+  location: two
+  host_team: two

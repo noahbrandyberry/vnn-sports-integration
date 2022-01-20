@@ -1,0 +1,17 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  name: MyString
+  short_name: MyString
+  login_url: MyString
+  supported_by_vnn: 1
+  has_conference: false
+  has_location_name: false
+
+two:
+  name: MyString
+  short_name: MyString
+  login_url: MyString
+  supported_by_vnn: 1
+  has_conference: false
+  has_location_name: false

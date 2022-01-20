@@ -1,0 +1,47 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  name: MyString
+  mascot: MyString
+  is_vnn: false
+  url: MyString
+  logo_url: MyString
+  anti_discrimination_disclaimer: MyText
+  registration_text: MyText
+  registration_url: MyString
+  primary_color: MyString
+  secondary_color: MyString
+  tertiary_color: MyString
+  enrollment: 1
+  athletic_director: MyString
+  phone: MyString
+  email: MyString
+  blog: 1
+  sportshub_version: 1
+  version: 1
+  instagram: MyString
+  onboarding: MyString
+  location: one
+
+two:
+  name: MyString
+  mascot: MyString
+  is_vnn: false
+  url: MyString
+  logo_url: MyString
+  anti_discrimination_disclaimer: MyText
+  registration_text: MyText
+  registration_url: MyString
+  primary_color: MyString
+  secondary_color: MyString
+  tertiary_color: MyString
+  enrollment: 1
+  athletic_director: MyString
+  phone: MyString
+  email: MyString
+  blog: 1
+  sportshub_version: 1
+  version: 1
+  instagram: MyString
+  onboarding: MyString
+  location: two
