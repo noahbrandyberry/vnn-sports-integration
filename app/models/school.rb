@@ -1,6 +1,7 @@
 class School < ApplicationRecord
-  belongs_to :location
-  has_many: programs
+  belongs_to :location, optional: true
+  has_many :programs
+  has_many :teams
   
   def self.find_or_create_from_api result
     school = find_by id: result['id']
@@ -27,7 +28,7 @@ class School < ApplicationRecord
         key.version = result['version']
         key.instagram = result['instagram']
         key.onboarding = result['onboarding']
-        key.location = Location.find_or_create_from_api result['_embedded']['location'][0]
+        key.location = Location.find_or_create_from_api result['_embedded']['location'][0] if result['_embedded'].try(:[], 'location')
       end
 
       school.save

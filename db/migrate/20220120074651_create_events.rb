@@ -17,7 +17,7 @@ class CreateEvents < ActiveRecord::Migration[7.0]
       t.boolean :home
       t.boolean :canceled
       t.boolean :postponed
-      t.references :location, null: false, foreign_key: true
+      t.references :location, null: true, foreign_key: true
       t.references :host_team, null: true, foreign_key: { to_table: :teams }
 
       t.timestamps

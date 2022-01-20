@@ -1,6 +1,6 @@
 class Event < ApplicationRecord
-  belongs_to :location
-  belongs_to :host_team, class_name: "Team"
+  belongs_to :location, optional: true
+  belongs_to :host_team, class_name: "Team", optional: true
   has_many :team_events
   has_many :teams, through: :team_events
 
@@ -26,7 +26,7 @@ class Event < ApplicationRecord
         key.canceled = result['canceled']
         key.postponed = result['postponed']
         key.host_team = Team.find_or_create_from_api result['_embedded']['host_team'][0] if result['_embedded']['host_team']
-        key.location = Location.find_or_create_from_api result['_embedded']['location'][0]
+        key.location = Location.find_or_create_from_api result['_embedded']['location'][0] if result['_embedded']['location']
       end
 
       if event.save

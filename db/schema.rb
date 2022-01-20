@@ -32,7 +32,7 @@ ActiveRecord::Schema.define(version: 2022_01_20_074733) do
     t.boolean "home"
     t.boolean "canceled"
     t.boolean "postponed"
-    t.bigint "location_id", null: false
+    t.bigint "location_id"
     t.bigint "host_team_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
@@ -121,7 +121,7 @@ ActiveRecord::Schema.define(version: 2022_01_20_074733) do
     t.integer "version"
     t.string "instagram"
     t.string "onboarding"
-    t.bigint "location_id", null: false
+    t.bigint "location_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["location_id"], name: "index_schools_on_location_id"
@@ -156,17 +156,23 @@ ActiveRecord::Schema.define(version: 2022_01_20_074733) do
     t.string "photo_url"
     t.text "home_description"
     t.boolean "hide_gender"
-    t.bigint "program_id", null: false
+    t.bigint "program_id"
     t.bigint "schedule_source_id"
-    t.bigint "year_id", null: false
-    t.bigint "season_id", null: false
-    t.bigint "level_id", null: false
+    t.bigint "year_id"
+    t.bigint "season_id"
+    t.bigint "level_id"
+    t.bigint "school_id"
+    t.bigint "gender_id"
+    t.bigint "sport_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.index ["gender_id"], name: "index_teams_on_gender_id"
     t.index ["level_id"], name: "index_teams_on_level_id"
     t.index ["program_id"], name: "index_teams_on_program_id"
     t.index ["schedule_source_id"], name: "index_teams_on_schedule_source_id"
+    t.index ["school_id"], name: "index_teams_on_school_id"
     t.index ["season_id"], name: "index_teams_on_season_id"
+    t.index ["sport_id"], name: "index_teams_on_sport_id"
     t.index ["year_id"], name: "index_teams_on_year_id"
   end
 
@@ -187,9 +193,12 @@ ActiveRecord::Schema.define(version: 2022_01_20_074733) do
   add_foreign_key "schools", "locations"
   add_foreign_key "team_events", "events"
   add_foreign_key "team_events", "teams"
+  add_foreign_key "teams", "genders"
   add_foreign_key "teams", "levels"
   add_foreign_key "teams", "programs"
   add_foreign_key "teams", "schedule_sources"
+  add_foreign_key "teams", "schools"
   add_foreign_key "teams", "seasons"
+  add_foreign_key "teams", "sports"
   add_foreign_key "teams", "years"
 end
