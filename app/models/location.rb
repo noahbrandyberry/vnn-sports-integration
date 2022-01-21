@@ -10,6 +10,7 @@ class Location < ApplicationRecord
         key.name = result['name']
         key.address_1 = result['address_1']
         key.address_2 = result['address_2']
+        key.city = result['city']
         key.state = result['state']['name'] if result['state'].try(:[], 'name')
         key.zip = result['zip']
         key.plus_4 = result['plus_4']
