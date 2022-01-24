@@ -4,6 +4,10 @@ class Event < ApplicationRecord
   has_many :team_events
   has_many :teams, through: :team_events
 
+  def opponents team
+    teams.where.not(id: team.id)
+  end
+
   def self.find_or_create_from_api result
     event = find_by id: result['id']
     if !event
