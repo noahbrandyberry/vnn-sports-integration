@@ -1,12 +1,12 @@
 class Api::V1::TeamsController < ApplicationController
   before_action :set_school
-  before_action :set_team, only: %i[ show update destroy ]
+  before_action :set_team, only: %i[ show ]
 
 
   # GET /teams
   # GET /teams.json
   def index
-    @teams = @school.teams
+    @teams = @school.teams.includes(program: [:gender, :sport]).includes(:year, :season, :level, :gender, :sport)
   end
 
   # GET /teams/1
