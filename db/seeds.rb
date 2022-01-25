@@ -15,7 +15,7 @@ team_results.each do |result|
   if team.valid?
     puts "Saved team: #{team.name}"
 
-    url = "#{base_url}/vnn/team/#{team.id}/event?per_page=250"
+    url = "#{base_url}/vnn/team/#{team.id}/event?per_page=250&visible=true"
     conn = Faraday.new(url: url) do |faraday|
       faraday.adapter Faraday.default_adapter
       faraday.response :json
