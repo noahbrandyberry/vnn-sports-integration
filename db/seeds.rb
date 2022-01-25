@@ -30,6 +30,21 @@ team_results.each do |result|
         puts "Failed to save event: #{event.name}\n\tErrors: #{event.errors.full_messages.to_sentence}" if !event.valid?
       end
     end
+    url = "#{base_url}/team/#{team.id}/pressbox/post"
+    conn = Faraday.new(url: url) do |faraday|
+      faraday.adapter Faraday.default_adapter
+      faraday.response :json
+    end
+
+    conn.headers['Authorization'] = 'Bearer 3ce911564c2a18041053c0fcfe5c481018a31ec7'
+
+    posts = conn.get.body['_embedded']['pressbox_post'] if conn.get.body['_embedded']
+    if posts
+      posts.each do |post|
+        pressbox_post = PressboxPost.find_or_create_from_api post
+        puts "Failed to save pressbox_post: #{pressbox_post.title}\n\tErrors: #{pressbox_post.errors.full_messages.to_sentence}" if !pressbox_post.valid?
+      end
+    end
   else
     puts "Failed to save team: #{team.name}\n\tErrors: #{team.errors.full_messages.to_sentence}"
   end

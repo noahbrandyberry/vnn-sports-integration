@@ -10,6 +10,24 @@ class Team < ApplicationRecord
 
   has_many :team_events
   has_many :events, through: :team_events
+  has_many :pressbox_posts
+
+  def record
+    event_results = events.includes(:result).where.not(result: {id: nil})
+      if event_results.length > 0
+      current_record = {
+        win: 0,
+        loss: 0,
+        tie: 0
+      }
+      event_results.each do |event|
+        result_status = event.result_status self
+        current_record[result_status.to_sym] += 1
+      end
+
+      return current_record
+    end
+  end
 
   def self.find_or_create_from_api result
     team = find_by id: result['id']

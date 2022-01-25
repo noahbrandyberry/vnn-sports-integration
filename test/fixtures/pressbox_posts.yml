@@ -1,0 +1,33 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  is_visible: false
+  created: 2022-01-24 23:01:49
+  modified: 2022-01-24 23:01:49
+  created_by: MyString
+  modified_by: MyString
+  submitted: 2022-01-24 23:01:49
+  submitted_by: MyString
+  title: MyString
+  recap: MyText
+  boxscore: MyText
+  website_only: false
+  featured_image: MyString
+  event: one
+  team: one
+
+two:
+  is_visible: false
+  created: 2022-01-24 23:01:49
+  modified: 2022-01-24 23:01:49
+  created_by: MyString
+  modified_by: MyString
+  submitted: 2022-01-24 23:01:49
+  submitted_by: MyString
+  title: MyString
+  recap: MyText
+  boxscore: MyText
+  website_only: false
+  featured_image: MyString
+  event: two
+  team: two

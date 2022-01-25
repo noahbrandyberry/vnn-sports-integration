@@ -4,7 +4,7 @@ class Api::V1::SchoolsController < ApplicationController
   # GET /schools
   # GET /schools.json
   def index
-    @schools = School.all
+    @schools = School.all.includes(:location)
   end
 
   # GET /schools/1

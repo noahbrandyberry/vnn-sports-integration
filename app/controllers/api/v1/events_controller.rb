@@ -6,7 +6,7 @@ class Api::V1::EventsController < ApplicationController
   # GET /events
   # GET /events.json
   def index
-    @events = @team.events
+    @events = @team.events.includes(:team_results, :result, :teams, :location, :team_events)
   end
 
   # GET /events/1

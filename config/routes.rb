@@ -3,6 +3,7 @@ Rails.application.routes.draw do
     namespace :v1 do
       resources :schools do
         resources :teams do
+          resources :pressbox_posts
           resources :events
         end
       end

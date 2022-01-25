@@ -1,0 +1,15 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  team: one
+  name: MyString
+  place: 1
+  points: 1
+  event: one
+
+two:
+  team: two
+  name: MyString
+  place: 1
+  points: 1
+  event: two
