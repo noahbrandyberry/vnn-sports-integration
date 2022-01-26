@@ -20,7 +20,7 @@ class Event < ApplicationRecord
   end
 
   def opponents team
-    teams.select {|t| t.id != t.id}
+    teams.select {|t| t.id != team.id}
   end
 
   def self.find_or_create_from_api result

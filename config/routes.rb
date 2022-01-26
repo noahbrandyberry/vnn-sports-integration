@@ -5,6 +5,7 @@ Rails.application.routes.draw do
         resources :teams do
           resources :pressbox_posts
           resources :events
+          get 'notification', to: 'events#notification'
         end
       end
     end

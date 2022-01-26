@@ -1,1 +1,1 @@
-json.extract! pressbox_post, :id, :is_visible, :created, :modified, :created_by, :modified_by, :submitted, :submitted_by, :title, :recap, :boxscore, :website_only, :featured_image, :created_at, :updated_at
+json.extract! pressbox_post, :id, :is_visible, :created, :modified, :created_by, :modified_by, :submitted, :submitted_by, :title, :recap, :boxscore, :website_only, :featured_image, :event_id, :team_id, :created_at, :updated_at
