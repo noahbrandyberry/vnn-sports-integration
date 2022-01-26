@@ -1,4 +1,5 @@
 class Api::V1::EventsController < ApplicationController
+  protect_from_forgery with: :null_session
   before_action :set_school
   before_action :set_team
   before_action :set_event, only: %i[ show ]
@@ -12,15 +13,6 @@ class Api::V1::EventsController < ApplicationController
   # GET /events/1
   # GET /events/1.json
   def show
-  end
-
-  def notification
-    n = Rpush::Apnsp8::Notification.new
-    n.app = Rpush::Apnsp8::App.find_by_name("ios_app")
-    n.device_token = ENV['device_token']
-    n.alert = "hello world!"
-    n.data = { foo: :bar }
-    n.save!
   end
 
   private

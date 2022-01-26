@@ -1,4 +1,5 @@
 class Api::V1::SchoolsController < ApplicationController
+  protect_from_forgery with: :null_session
   before_action :set_school, only: %i[ show update destroy ]
 
   # GET /schools

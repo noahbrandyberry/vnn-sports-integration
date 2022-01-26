@@ -1,11 +1,11 @@
 Rails.application.routes.draw do
   namespace :api do
     namespace :v1 do
+      resources :devices
       resources :schools do
         resources :teams do
           resources :pressbox_posts
           resources :events
-          get 'notification', to: 'events#notification'
         end
       end
     end

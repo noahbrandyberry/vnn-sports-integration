@@ -1,4 +1,5 @@
 class Api::V1::PressboxPostsController < ApplicationController
+  protect_from_forgery with: :null_session
   before_action :set_school
   before_action :set_team
   before_action :set_pressbox_post, only: %i[ show ]

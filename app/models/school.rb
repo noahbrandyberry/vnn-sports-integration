@@ -55,7 +55,6 @@ class School < ApplicationRecord
     team_results = conn.get.body['_embedded']['team']
 
     team_results.each do |result|
-      next unless [3154577, 3116753, 3116759].include? result['id']
       self.find_or_create_from_api result['_embedded']['school'][0] # Create school from team data to ensure location data is passed.
       
       team = Team.find_or_create_from_api result
