@@ -70,10 +70,10 @@ class Event < ApplicationRecord
               fetched_opponent = conn.get.body
             end
 
-            if opponent['_embedded'].try(:[], 'team') && !opponent['_embedded']['team'][0].try(:[], 'invalid') && fetched_opponent.try(:[], '_embedded').try(:[], 'team')
+            if opponent['_embedded'].try(:[], 'team') && !opponent['_embedded']['team'][0].try(:[], 'invalid')
               team_event = TeamEvent.new do |key|
                 key.event = event
-                key.team = Team.find_or_create_from_api fetched_opponent['_embedded']['team'][0]
+                key.team = Team.find_or_create_from_api fetched_opponent
                 key.home = host_team_id == key.team.id
               end
 
