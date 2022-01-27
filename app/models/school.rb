@@ -53,7 +53,7 @@ class School < ApplicationRecord
       team = Team.find_or_create_from_api result
 
       if team.valid?
-        puts "Saved team: #{team.name}"
+        puts "Saved team: #{team.school.try(:name)} - #{team.name}"
 
         url = "#{base_url}/vnn/team/#{team.id}/event?per_page=250&visible=true"
         conn = Faraday.new(url: url) do |faraday|

@@ -61,14 +61,14 @@ class Event < ApplicationRecord
           result['_embedded']['opponent'].each do |opponent|
             url = opponent["_links"]["self"]["href"]
 
-            unless url.include? "opponent"
-              conn = Faraday.new(url: url) do |faraday|
-                faraday.adapter Faraday.default_adapter
-                faraday.response :json
-              end
+            # unless url.include? "opponent"
+            #   conn = Faraday.new(url: url) do |faraday|
+            #     faraday.adapter Faraday.default_adapter
+            #     faraday.response :json
+            #   end
 
-              opponent = conn.get.body
-            end
+            #   opponent = conn.get.body
+            # end
             
             team_event = TeamEvent.new do |key|
               key.event = event
