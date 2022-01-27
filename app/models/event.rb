@@ -66,14 +66,14 @@ class Event < ApplicationRecord
                 faraday.adapter Faraday.default_adapter
                 faraday.response :json
               end
-              
-              opponent = conn.get.body
+
+              fetched_opponent = conn.get.body
             end
 
             if opponent['_embedded'].try(:[], 'team') && !opponent['_embedded']['team'][0].try(:[], 'invalid')
               team_event = TeamEvent.new do |key|
                 key.event = event
-                key.team = Team.find_or_create_from_api opponent['_embedded']['team'][0]
+                key.team = Team.find_or_create_from_api fetched_opponent['_embedded']['team'][0]
                 key.home = host_team_id == key.team.id
               end
 
