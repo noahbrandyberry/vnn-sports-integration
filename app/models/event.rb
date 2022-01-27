@@ -59,24 +59,16 @@ class Event < ApplicationRecord
 
         if result['_embedded']['opponent']
           result['_embedded']['opponent'].each do |opponent|
-            url = opponent["_links"]["self"]["href"]
-
-            # unless url.include? "opponent"
-            #   conn = Faraday.new(url: url) do |faraday|
-            #     faraday.adapter Faraday.default_adapter
-            #     faraday.response :json
-            #   end
-
-            #   opponent = conn.get.body
-            # end
             
-            team_event = TeamEvent.new do |key|
-              key.event = event
-              key.team = Team.find_or_create_from_api opponent
-              key.home = host_team_id == key.team.id
-            end
+            if opponent['_embedded'].try(:[], 'team')
+              team_event = TeamEvent.new do |key|
+                key.event = event
+                key.team = Team.find_or_create_from_api opponent['_embedded']['team'][0]
+                key.home = host_team_id == key.team.id
+              end
 
-            team_event.save
+              team_event.save
+            end
           end
         end
 

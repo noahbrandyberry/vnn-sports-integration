@@ -21,6 +21,7 @@ class CreateSchools < ActiveRecord::Migration[7.0]
       t.integer :version
       t.string :instagram
       t.string :onboarding
+      t.boolean :visible, default: false, null: true
       t.references :location, null: true, foreign_key: true
 
       t.timestamps
