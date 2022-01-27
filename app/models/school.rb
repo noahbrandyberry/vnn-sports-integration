@@ -6,13 +6,6 @@ class School < ApplicationRecord
   def self.find_or_create_from_api result
     school = find_by id: result['id']
     if !school
-      conn = Faraday.new(url: result["_links"]["self"]["href"]) do |faraday|
-        faraday.adapter Faraday.default_adapter
-        faraday.response :json
-      end
-
-      result = conn.get.body
-
       school = new do |key|
         key.id = result['id']
         key.name = result['name']
