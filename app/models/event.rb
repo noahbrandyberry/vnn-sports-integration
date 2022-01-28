@@ -54,6 +54,7 @@ class Event < ApplicationRecord
           key.bus_departure_datetime_local = result['bus_departure_datetime_local']
           key.bus_return_datetime_local = result['bus_return_datetime_local']
           key.home = (result['home'] || host_team_id == key.team.id)
+          key.opponent_name = result['opponent_name']
         end
         team_event.save
 
