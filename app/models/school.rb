@@ -4,6 +4,10 @@ class School < ApplicationRecord
   has_many :teams
   has_many :device_subscriptions, as: :subscribable
 
+  def all_teams
+    (teams + programs.map(&:teams)).flatten.uniq
+  end
+
   def self.update_or_create_from_api result
     school = find_by id: result['id']
 
