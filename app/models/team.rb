@@ -11,6 +11,7 @@ class Team < ApplicationRecord
   has_many :team_events
   has_many :events, through: :team_events
   has_many :pressbox_posts
+  has_many :device_subscriptions, as: :subscribable
 
   def record
     event_results = events.includes(:result).where.not(result: {id: nil})

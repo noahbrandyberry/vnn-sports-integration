@@ -1,0 +1,1 @@
+json.extract! @device, :device_token, :device_subscriptions

@@ -2,6 +2,7 @@ class School < ApplicationRecord
   belongs_to :location, optional: true
   has_many :programs
   has_many :teams
+  has_many :device_subscriptions, as: :subscribable
 
   def self.update_or_create_from_api result
     school = find_by id: result['id']
@@ -108,7 +109,7 @@ class School < ApplicationRecord
         event_results = conn.get.body['_embedded']['event'] if conn.get.body['_embedded']
         if event_results
           event_results.each do |event_result|
-            event = Event.find_or_create_from_api event_result
+            event = Event.update_or_create_from_api event_result
             puts "Failed to save event: #{event.name}\n\tErrors: #{event.errors.full_messages.to_sentence}" if !event.valid?
           end
         end

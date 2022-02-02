@@ -1,7 +1,7 @@
 class PressboxPost < ApplicationRecord
   self.primary_key = :id
 
-  belongs_to :event
+  belongs_to :event, optional: true
   belongs_to :team
 
   def self.find_or_create_from_api result

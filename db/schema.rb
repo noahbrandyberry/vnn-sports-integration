@@ -10,10 +10,20 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_01_28_071157) do
+ActiveRecord::Schema.define(version: 2022_02_02_042205) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "device_subscriptions", force: :cascade do |t|
+    t.bigint "device_id", null: false
+    t.string "subscribable_type"
+    t.bigint "subscribable_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["device_id"], name: "index_device_subscriptions_on_device_id"
+    t.index ["subscribable_type", "subscribable_id"], name: "index_device_subscriptions_on_subscribable"
+  end
 
   create_table "devices", force: :cascade do |t|
     t.string "device_token"
@@ -303,6 +313,7 @@ ActiveRecord::Schema.define(version: 2022_01_28_071157) do
     t.datetime "updated_at", precision: 6, null: false
   end
 
+  add_foreign_key "device_subscriptions", "devices"
   add_foreign_key "events", "locations"
   add_foreign_key "pressbox_posts", "events"
   add_foreign_key "pressbox_posts", "teams"

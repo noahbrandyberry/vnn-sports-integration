@@ -4,11 +4,13 @@ class Api::V1::DevicesController < ApplicationController
   # POST /devices
   # POST /devices.json
   def create
-    @device = Device.find_by(device_params)
-    @device = Device.new(device_params) if !@device
+    @device = Device.find_by(device_token: device_params[:device_token])
+    @device = Device.new if !@device
+
+    @device.assign_attributes(device_params)
 
     if @device.save
-      render json: @device
+      render '_device'
     else
       render json: @device.errors, status: :unprocessable_entity
     end
@@ -21,9 +23,13 @@ class Api::V1::DevicesController < ApplicationController
   end
 
   private
+    # Use callbacks to share common setup or constraints between actions.
+    def set_device
+      @device = Device.find(params[:id])
+    end
 
     # Only allow a list of trusted parameters through.
     def device_params
-      params.require(:device).permit(:device_token)
+      params.require(:device).permit(:device_token, device_subscriptions_attributes: [:id, :subscribable_type, :subscribable_id, :_destroy])
     end
 end
