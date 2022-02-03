@@ -6,7 +6,7 @@ class Device < ApplicationRecord
     all.includes(device_subscriptions: [:subscribable]).each do |device|
       device.teams.each do |team|
         offset_time = Time.now.ago(30.minutes)
-        events = team.events.where(start: offset_time.beginning_of_hour..offset_time.end_of_hour)
+        events = team.events.where(start: offset_time.ago(10.minutes)..offset_time)
 
         events.each do |event|
           n = Rpush::Apnsp8::Notification.new
