@@ -2,6 +2,7 @@ Rails.application.routes.draw do
   namespace :api do
     namespace :v1 do
       resources :devices
+      get 'schools/:id/upcoming_events', to: "schools#upcoming_events"
       resources :schools do
         resources :teams do
           resources :pressbox_posts

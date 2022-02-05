@@ -8,6 +8,21 @@ class School < ApplicationRecord
     (teams + programs.map(&:teams)).flatten.uniq
   end
 
+  def current_teams
+    current_year = Year.current
+    seasons = Season.all.select do |season|
+      start_year = season.start.month >= current_year.start.month ? current_year.start.year : current_year.end.year
+      start_date = season.start.change(year: start_year)
+
+      end_year = season.end.month >= current_year.start.month ? current_year.start.year : current_year.end.year
+      end_date = season.end.change(year: end_year)
+
+      DateTime.now.between? start_date, end_date
+    end
+
+    Team.includes(:team_events).where(season: seasons, school_id: id).or(Team.includes(:team_events).where(season: seasons, program: programs))
+  end
+
   def self.update_or_create_from_api result
     school = find_by id: result['id']
 
