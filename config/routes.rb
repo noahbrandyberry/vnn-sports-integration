@@ -2,7 +2,7 @@ Rails.application.routes.draw do
   namespace :api do
     namespace :v1 do
       resources :devices
-      get 'schools/:id/upcoming_events', to: "schools#upcoming_events"
+      get 'schools/:id/upcoming_events', to: 'schools#upcoming_events'
       resources :schools do
         resources :teams do
           resources :pressbox_posts
@@ -14,5 +14,8 @@ Rails.application.routes.draw do
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
   # Defines the root path route ("/")
-  root "home#index"
+  get 'support/', to: 'home#support', as: :support
+  get 'privacy-policy/', to: 'home#privacy_policy', as: :privacy_policy
+  get 'terms/', to: 'home#terms', as: :terms
+  root 'home#index'
 end
