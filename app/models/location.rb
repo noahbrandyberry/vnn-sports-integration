@@ -24,4 +24,8 @@ class Location < ApplicationRecord
     
     location
   end
+
+  def format_address seperator = ','
+    "#{name}, #{address_1} #{address_2} #{city}, #{state} #{zip}"
+  end
 end

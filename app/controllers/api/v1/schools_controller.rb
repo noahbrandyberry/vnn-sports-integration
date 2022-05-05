@@ -17,8 +17,45 @@ class Api::V1::SchoolsController < ApplicationController
   # GET /schools/1/upcoming_events.json
   def upcoming_events
     @teams = @school.current_teams
+    @teams = @teams.where(level_id: params[:level_id]) if params[:level_id].present?
+    @teams = @teams.where(gender_id: params[:gender_id]) if params[:gender_id].present?
     event_ids = @teams.map{|team| team.team_events.map(&:event_id)}.flatten.uniq
     @events = Event.where(id: event_ids).includes(team_results: [:team]).includes(:result, :teams, :location, :team_events).uniq
+
+    respond_to do |format|
+      format.json
+      format.ics do
+        @calendar = Icalendar::Calendar.new
+        @calendar.append_custom_property('X-APPLE-CALENDAR-COLOR', @school.primary_color)
+        @events.each do |e|
+          start = e.start.in_time_zone(e.location.try(:timezone) || 'America/New_York')
+          team = @teams.to_a.intersection(e.teams).first
+          opponent_name = e.team_events.to_a.find { |team_event| team_event.team_id === team.id }.try(:opponent_name)
+          opponents = e.teams - [team]
+
+          event = Icalendar::Event.new
+          event.dtstart = start
+          event.dtend = start + 2.hours
+          description = ""
+          if team && (opponents.length === 1 || opponent_name)
+            event.summary = "#{team.name} vs #{opponents[0] ? opponents[0].name : opponent_name}"
+            description += "Details: #{e.name}\n\n"
+          else
+            event.summary = "#{team.name} - #{e.name}"
+          end
+
+          description += "This event is up to date as of #{e.updated_at.in_time_zone(e.location.try(:timezone) || 'America/New_York').strftime('%D %l:%M %p %Z')}"
+          event.description = description
+
+          event.location = e.location.try(:format_address)
+          event.uid = e.id.to_s
+
+          @calendar.add_event(event)
+        end
+
+        @calendar.publish
+      end
+    end
   end
 
   private

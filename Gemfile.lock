@@ -102,6 +102,9 @@ GEM
     http-2 (0.11.0)
     i18n (1.8.11)
       concurrent-ruby (~> 1.0)
+    icalendar (2.7.1)
+      ice_cube (~> 0.16)
+    ice_cube (0.16.4)
     io-console (0.5.11)
     io-wait (0.2.1)
     irb (1.4.1)
@@ -250,6 +253,7 @@ DEPENDENCIES
   cssbundling-rails
   debug
   faraday (~> 2.1)
+  icalendar (~> 2.7, >= 2.7.1)
   jbuilder
   jsbundling-rails
   pg (~> 1.1)
