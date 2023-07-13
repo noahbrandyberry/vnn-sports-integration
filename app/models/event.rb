@@ -24,13 +24,13 @@ class Event < ApplicationRecord
   end
   
   def self.update_or_create_from_api result
-    event = find_by id: result['id']
+    event = find_by id: "vnn-#{result['id']}"
 
     if event
       team_events = []
 
       event = event.tap do |key|
-        key.id = result['id']
+        key.id = "vnn-#{result['id']}"
         key.name = result['name']
         key.event_type = result['event_type']
         key.start = result['start']
@@ -52,12 +52,10 @@ class Event < ApplicationRecord
             url = opponent["_links"]["self"]["href"]
 
             unless url.include? "opponent"
-              conn = Faraday.new(url: url) do |faraday|
-                faraday.adapter Faraday.default_adapter
-                faraday.response :json
-              end
-
-              fetched_opponent = conn.get.body
+              fetched_opponent = Vnn::V1::Client.authorized_request(
+                http_method: :get, 
+                endpoint: url
+              )
             end
 
             if opponent['_embedded'].try(:[], 'team') && !opponent['_embedded']['team'][0].try(:[], 'invalid')
@@ -72,7 +70,7 @@ class Event < ApplicationRecord
           event.team_results.destroy_all
           result['result'].each do |result|
             result = result['team']
-            TeamResult.create(event: event, team_id: result['id'], name: result['name'], place: result['place'], points: result['points'])
+            TeamResult.create(event: event, team_id: "vnn-#{result['id']}", name: result['name'], place: result['place'], points: result['points'])
           end
         elsif result['result'] && result['result']['away'] && result['result']['home']
           event.result.try(:destroy)
@@ -87,7 +85,7 @@ class Event < ApplicationRecord
   end
 
   def self.find_or_create_from_api result
-    event = find_by id: result['id']
+    event = find_by id: "vnn-#{result['id']}"
     event = self.create_from_api result if !event
     
     event
@@ -95,7 +93,7 @@ class Event < ApplicationRecord
   
   def self.create_from_api result
     event = new do |key|
-      key.id = result['id']
+      key.id = "vnn-#{result['id']}"
       key.name = result['name']
       key.event_type = result['event_type']
       key.start = result['start']
@@ -117,12 +115,10 @@ class Event < ApplicationRecord
           url = opponent["_links"]["self"]["href"]
 
           unless url.include? "opponent"
-            conn = Faraday.new(url: url) do |faraday|
-              faraday.adapter Faraday.default_adapter
-              faraday.response :json
-            end
-
-            fetched_opponent = conn.get.body
+            fetched_opponent = Vnn::V1::Client.authorized_request(
+              http_method: :get, 
+              endpoint: url
+            )
           end
 
           if opponent['_embedded'].try(:[], 'team') && !opponent['_embedded']['team'][0].try(:[], 'invalid')
@@ -134,7 +130,7 @@ class Event < ApplicationRecord
       if result['result'].kind_of?(Array)
         result['result'].each do |result|
           result = result['team']
-          TeamResult.create(event: event, team_id: result['id'], name: result['name'], place: result['place'], points: result['points'])
+          TeamResult.create(event: event, team_id: "vnn-#{result['id']}", name: result['name'], place: result['place'], points: result['points'])
         end
       elsif result['result'] && result['result']['away'] && result['result']['home']
         Result.create(event: event, away: result['result']['away'], home: result['result']['home'])

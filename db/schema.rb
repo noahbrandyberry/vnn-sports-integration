@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_02_02_042205) do
+ActiveRecord::Schema.define(version: 2023_07_13_023125) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -31,7 +31,7 @@ ActiveRecord::Schema.define(version: 2022_02_02_042205) do
     t.datetime "updated_at", precision: 6, null: false
   end
 
-  create_table "events", force: :cascade do |t|
+  create_table "events", id: :serial, force: :cascade do |t|
     t.string "name"
     t.string "event_type"
     t.datetime "start", precision: 6
@@ -42,7 +42,7 @@ ActiveRecord::Schema.define(version: 2022_02_02_042205) do
     t.boolean "location_verified"
     t.boolean "canceled"
     t.boolean "postponed"
-    t.bigint "location_id"
+    t.string "location_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["location_id"], name: "index_events_on_location_id"
@@ -54,13 +54,23 @@ ActiveRecord::Schema.define(version: 2022_02_02_042205) do
     t.datetime "updated_at", precision: 6, null: false
   end
 
+  create_table "integration_tokens", force: :cascade do |t|
+    t.string "integration_name"
+    t.string "access_token"
+    t.string "token_type"
+    t.string "scope"
+    t.integer "expires_in"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
+
   create_table "levels", force: :cascade do |t|
     t.string "name"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
   end
 
-  create_table "locations", force: :cascade do |t|
+  create_table "locations", id: :serial, force: :cascade do |t|
     t.string "name"
     t.string "address_1"
     t.string "address_2"
@@ -89,18 +99,18 @@ ActiveRecord::Schema.define(version: 2022_02_02_042205) do
     t.text "boxscore"
     t.boolean "website_only"
     t.string "featured_image"
-    t.bigint "event_id"
-    t.bigint "team_id"
+    t.string "event_id"
+    t.string "team_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["event_id"], name: "index_pressbox_posts_on_event_id"
     t.index ["team_id"], name: "index_pressbox_posts_on_team_id"
   end
 
-  create_table "programs", force: :cascade do |t|
+  create_table "programs", id: :serial, force: :cascade do |t|
     t.string "name"
     t.string "name_slug"
-    t.bigint "school_id", null: false
+    t.string "school_id", null: false
     t.bigint "gender_id", null: false
     t.bigint "sport_id", null: false
     t.datetime "created_at", precision: 6, null: false
@@ -113,7 +123,7 @@ ActiveRecord::Schema.define(version: 2022_02_02_042205) do
   create_table "results", force: :cascade do |t|
     t.integer "away"
     t.integer "home"
-    t.bigint "event_id", null: false
+    t.string "event_id", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["event_id"], name: "index_results_on_event_id"
@@ -209,7 +219,7 @@ ActiveRecord::Schema.define(version: 2022_02_02_042205) do
     t.index ["schedule_provider_id"], name: "index_schedule_sources_on_schedule_provider_id"
   end
 
-  create_table "schools", force: :cascade do |t|
+  create_table "schools", id: :serial, force: :cascade do |t|
     t.string "name"
     t.string "mascot"
     t.boolean "is_vnn"
@@ -231,7 +241,7 @@ ActiveRecord::Schema.define(version: 2022_02_02_042205) do
     t.string "instagram"
     t.string "onboarding"
     t.boolean "visible", default: false
-    t.bigint "location_id"
+    t.string "location_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["location_id"], name: "index_schools_on_location_id"
@@ -252,8 +262,8 @@ ActiveRecord::Schema.define(version: 2022_02_02_042205) do
   end
 
   create_table "team_events", force: :cascade do |t|
-    t.bigint "event_id", null: false
-    t.bigint "team_id", null: false
+    t.string "event_id", null: false
+    t.string "team_id", null: false
     t.text "private_notes"
     t.text "public_notes"
     t.datetime "bus_dismissal_datetime_local", precision: 6
@@ -268,29 +278,29 @@ ActiveRecord::Schema.define(version: 2022_02_02_042205) do
   end
 
   create_table "team_results", force: :cascade do |t|
-    t.bigint "team_id"
+    t.string "team_id"
     t.string "name"
     t.integer "place"
     t.integer "points"
-    t.bigint "event_id", null: false
+    t.string "event_id", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["event_id"], name: "index_team_results_on_event_id"
     t.index ["team_id"], name: "index_team_results_on_team_id"
   end
 
-  create_table "teams", force: :cascade do |t|
+  create_table "teams", id: :serial, force: :cascade do |t|
     t.string "name"
     t.string "label"
     t.string "photo_url"
     t.text "home_description"
     t.boolean "hide_gender"
-    t.bigint "program_id"
+    t.string "program_id"
     t.bigint "schedule_source_id"
     t.bigint "year_id"
     t.bigint "season_id"
     t.bigint "level_id"
-    t.bigint "school_id"
+    t.string "school_id"
     t.bigint "gender_id"
     t.bigint "sport_id"
     t.datetime "created_at", precision: 6, null: false

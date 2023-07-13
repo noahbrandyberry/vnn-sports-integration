@@ -16,4 +16,8 @@ class Season < ApplicationRecord
     
     season
   end
+
+  def to_s
+    name
+  end
 end

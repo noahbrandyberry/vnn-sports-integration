@@ -20,4 +20,8 @@ class Year < ApplicationRecord
     
     year
   end
+
+  def to_s
+    name
+  end
 end

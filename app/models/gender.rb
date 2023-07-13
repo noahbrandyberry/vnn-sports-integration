@@ -14,4 +14,8 @@ class Gender < ApplicationRecord
     
     gender
   end
+
+  def to_s
+    name
+  end
 end

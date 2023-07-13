@@ -5,10 +5,10 @@ class PressboxPost < ApplicationRecord
   belongs_to :team
 
   def self.find_or_create_from_api result
-    pressbox_post = find_by id: result['id']
+    pressbox_post = find_by id: "vnn-#{result['id']}"
     if !pressbox_post
       pressbox_post = new do |key|
-        key.id = result['id']
+        key.id = "vnn-#{result['id']}"
         key.title = result['title']
         key.recap = result['recap']
         key.featured_image = result['featured_image']

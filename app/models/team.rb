@@ -31,11 +31,11 @@ class Team < ApplicationRecord
   end
 
   def self.update_or_create_from_api result
-    team = find_by id: result['id']
+    team = find_by id: "vnn-#{result['id']}"
 
     if team
       team = team.tap do |key|
-        key.id = result['id']
+        key.id = "vnn-#{result['id']}"
         key.name = result['name']
         key.label = result['label']
         key.photo_url = result['photo_url']
@@ -60,7 +60,7 @@ class Team < ApplicationRecord
   end
 
   def self.find_or_create_from_api result
-    team = find_by id: result['id']
+    team = find_by id: "vnn-#{result['id']}"
     team = self.create_from_api result if !team
     
     team
@@ -68,7 +68,7 @@ class Team < ApplicationRecord
 
   def self.create_from_api result
     team = new do |key|
-      key.id = result['id']
+      key.id = "vnn-#{result['id']}"
       key.name = result['name']
       key.label = result['label']
       key.photo_url = result['photo_url']

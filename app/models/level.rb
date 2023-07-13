@@ -14,4 +14,8 @@ class Level < ApplicationRecord
     
     level
   end
+
+  def to_s
+    name
+  end
 end

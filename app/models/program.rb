@@ -5,10 +5,10 @@ class Program < ApplicationRecord
   has_many :teams
 
   def self.find_or_create_from_api result
-    program = find_by id: result['id']
+    program = find_by id: "vnn-#{result['id']}"
     if !program
       program = new do |key|
-        key.id = result['id']
+        key.id = "vnn-#{result['id']}"
         key.name = result['name']
         key.name_slug = result['name_slug']
         key.school = School.find_or_create_from_api result['_embedded']['school'][0]

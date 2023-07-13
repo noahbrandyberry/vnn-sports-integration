@@ -1,12 +1,14 @@
 class Location < ApplicationRecord
   has_many :events
   has_many :schools
+  geocoded_by :to_s
+  after_validation :geocode, if: ->(obj){ obj.latitude != 0 }
   
   def self.find_or_create_from_api result
-    location = find_by id: result['id']
+    location = find_by id: "vnn-#{result['id']}"
     if !location
       location = new do |key|
-        key.id = result['id']
+        key.id = "vnn-#{result['id']}"
         key.name = result['name']
         key.address_1 = result['address_1']
         key.address_2 = result['address_2']
@@ -27,5 +29,9 @@ class Location < ApplicationRecord
 
   def format_address seperator = ','
     "#{name}, #{address_1} #{address_2} #{city}, #{state} #{zip}"
+  end
+
+  def to_s
+    "#{address_1} #{address_2} #{city}, #{state} #{zip}"
   end
 end
