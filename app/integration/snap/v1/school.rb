@@ -9,6 +9,10 @@ module Snap
         "snap-#{school_id}"
       end
 
+      def logo_url
+        "https://8to18-logos.s3.amazonaws.com/images/#{state.downcase}-#{subdomain.downcase}.png"
+      end
+
       def convert_to_record
         location = Location.new(
           id: record_id,
@@ -19,8 +23,11 @@ module Snap
           zip: zip,
           latitude: latitude,
           longitude: longitude,
-          timezone: "America/New_York"
         )
+
+        location.geocode
+
+        location.timezone = Timezone.lookup(location.latitude, location.longitude).name
 
         record_class.new(
           id: record_id,
@@ -28,9 +35,9 @@ module Snap
           mascot: mascot,
           is_vnn: vnn,
           url: url,
-          logo_url: '',
           primary_color: color1,
           secondary_color: color2,
+          logo_url: logo_url,
           phone: phone,
           visible: true,
           location: location
@@ -38,17 +45,21 @@ module Snap
       end
 
       def destroy_record
-        record = existing_record
-
-        if record
-          record.teams.map do |team|
-            team.events.destroy_all
+        if existing_record
+          existing_record.teams.map do |team|
             team.team_events.destroy_all
-          end
-          record.teams.destroy_all
 
-          record.destroy 
+            team.events.each do |event|
+              event_location = event.location
+              event.destroy
+              event_location.destroy if event_location
+            end
+
+            team.destroy
+          end
         end
+
+        super
 
         location = Location.find_by(id: "snap-#{school_id}")
         location.destroy if location

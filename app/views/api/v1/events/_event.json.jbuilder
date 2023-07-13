@@ -1,6 +1,6 @@
 team = @team || @teams.to_a.intersection(event.teams).first
 
-json.extract! event, :id, :name, :event_type, :start, :tba, :result_type, :conference, :scrimmage, :location_verified, :canceled, :postponed, :location, :result, :created_at, :updated_at
+json.extract! event, :id, :name, :event_type, :start, :tba, :result_type, :conference, :scrimmage, :location_verified, :location_name, :canceled, :postponed, :location, :result, :created_at, :updated_at
 json.opponents event.opponents team
 json.home event.host_team === team
 json.result_status event.result_status team

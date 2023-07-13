@@ -19,6 +19,7 @@ class Api::V1::SchoolsController < ApplicationController
     @teams = @school.current_teams
     @teams = @teams.where(level_id: params[:level_id]) if params[:level_id].present?
     @teams = @teams.where(gender_id: params[:gender_id]) if params[:gender_id].present?
+    @teams = @teams.where(id: params[:team_id]) if params[:team_id].present?
     event_ids = @teams.map{|team| team.team_events.map(&:event_id)}.flatten.uniq
     @events = Event.where(id: event_ids).includes(team_results: [:team]).includes(:result, :teams, :location, :team_events).uniq
 
@@ -26,6 +27,8 @@ class Api::V1::SchoolsController < ApplicationController
       format.json
       format.ics do
         @calendar = Icalendar::Calendar.new
+        calendar_name = @teams.count == 1 ? "#{@teams.first.name} Events" : "#{@school} Events"
+        @calendar.append_custom_property("X-WR-CALNAME", calendar_name)
         @calendar.append_custom_property('X-APPLE-CALENDAR-COLOR', @school.primary_color)
         @events.each do |e|
           start = e.start.in_time_zone(e.location.try(:timezone) || 'America/New_York')

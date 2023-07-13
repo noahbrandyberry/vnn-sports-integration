@@ -1,7 +1,7 @@
 Geocoder.configure(
   # Geocoding options
   # timeout: 3,                 # geocoding service timeout (secs)
-  lookup: :google, # name of geocoding service (symbol)
+  lookup: :google_places_search, # name of geocoding service (symbol)
   # ip_lookup: :ipinfo_io,      # name of IP address geocoding service (symbol)
   language: :en, # ISO-639 language code
   # use_https: false,           # use HTTPS for lookup requests? (if supported)
@@ -18,8 +18,9 @@ Geocoder.configure(
   # units: :mi,                 # :km for kilometers or :mi for miles
   # distances: :linear          # :spherical or :linear
   # Cache configuration
-  # cache_options: {
-  #   expiration: 2.days,
-  #   prefix: 'geocoder:'
-  # }
+  cache: Geocoder::CacheStore::Generic.new(Rails.cache, {}),
+  cache_options: {
+    expiration: 1.year,
+    prefix: 'geocoder:'
+  }
 )

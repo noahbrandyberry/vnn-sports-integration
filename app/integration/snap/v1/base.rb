@@ -8,21 +8,18 @@ module Snap
       end
 
       def import
-        new_record = convert_to_record
-        return unless new_record.valid?
-
         destroy_record
-
+        new_record = convert_to_record
         new_record.save
       end
 
       def destroy_record
-        record = existing_record
-        record.destroy if record
+        existing_record.destroy if existing_record
+        @record = nil
       end
 
       def existing_record
-        record_class.find_by(id: record_id)
+        @record ||= record_class.find_by(id: record_id)
       end
 
       def record_class

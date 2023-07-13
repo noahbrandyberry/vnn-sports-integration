@@ -2,7 +2,6 @@ class Location < ApplicationRecord
   has_many :events
   has_many :schools
   geocoded_by :to_s
-  after_validation :geocode, if: ->(obj){ obj.latitude != 0 }
   
   def self.find_or_create_from_api result
     location = find_by id: "vnn-#{result['id']}"
