@@ -12,6 +12,11 @@ module Snap
           @sport = @sport.delete_suffix(' MS')
           @level = 'MS'
         end
+
+        if @sport.starts_with?('Youth ')
+          @sport = @sport.delete_prefix('Youth ')
+          @level = 'Youth'
+        end
       end
 
       def record_id
