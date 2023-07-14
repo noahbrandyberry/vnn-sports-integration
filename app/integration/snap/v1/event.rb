@@ -14,7 +14,7 @@ module Snap
         home = place == 'H'
 
         location_search = home && school_location ? "#{location} #{school_location.city}" : location
-        location_results = location.present? ? Geocoder.search(location, locationbias: "point:#{school_location.latitude},#{school_location.longitude}") : []
+        location_results = location.present? ? Geocoder.search(location_search, locationbias: "point:#{school_location.latitude},#{school_location.longitude}") : []
         location_results = location_results.select {|result| school_location.distance_to(result.coordinates) < 75}
         location_result = location_results.sort_by {|result| school_location.distance_to(result.coordinates)}.first
 
