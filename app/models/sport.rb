@@ -19,4 +19,9 @@ class Sport < ApplicationRecord
   def to_s
     name
   end
+
+  def season
+    season_id = teams.pluck(:season_id).tally.sort_by {|_key, value| value}.reverse.try(:first).try(:first)
+    Season.find_by(id: season_id)
+  end
 end
