@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2023_07_13_191208) do
+ActiveRecord::Schema.define(version: 2023_07_14_051853) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -55,6 +55,15 @@ ActiveRecord::Schema.define(version: 2023_07_13_191208) do
     t.datetime "updated_at", precision: 6, null: false
   end
 
+  create_table "images", id: :string, force: :cascade do |t|
+    t.string "url"
+    t.string "description"
+    t.string "team_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["team_id"], name: "index_images_on_team_id"
+  end
+
   create_table "integration_tokens", force: :cascade do |t|
     t.string "integration_name"
     t.string "access_token"
@@ -84,6 +93,16 @@ ActiveRecord::Schema.define(version: 2023_07_13_191208) do
     t.decimal "longitude", precision: 10, scale: 6
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+  end
+
+  create_table "media", force: :cascade do |t|
+    t.string "url"
+    t.string "description"
+    t.integer "kind"
+    t.string "team_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["team_id"], name: "index_media_on_team_id"
   end
 
   create_table "pressbox_posts", id: false, force: :cascade do |t|
@@ -326,6 +345,8 @@ ActiveRecord::Schema.define(version: 2023_07_13_191208) do
 
   add_foreign_key "device_subscriptions", "devices"
   add_foreign_key "events", "locations"
+  add_foreign_key "images", "teams"
+  add_foreign_key "media", "teams"
   add_foreign_key "pressbox_posts", "events"
   add_foreign_key "pressbox_posts", "teams"
   add_foreign_key "programs", "genders"

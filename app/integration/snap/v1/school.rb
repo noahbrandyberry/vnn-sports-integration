@@ -48,6 +48,7 @@ module Snap
         if existing_record
           existing_record.teams.map do |team|
             team.team_events.destroy_all
+            team.images.destroy_all
 
             team.events.each do |event|
               event_location = event.location

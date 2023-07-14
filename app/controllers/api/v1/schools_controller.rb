@@ -19,6 +19,7 @@ class Api::V1::SchoolsController < ApplicationController
     @teams = @school.current_teams
     @teams = @teams.where(level_id: params[:level_id]) if params[:level_id].present?
     @teams = @teams.where(gender_id: params[:gender_id]) if params[:gender_id].present?
+    @teams = @teams.where(sport_id: params[:sport_id]) if params[:sport_id].present?
     @teams = @teams.where(id: params[:team_id]) if params[:team_id].present?
     event_ids = @teams.map{|team| team.team_events.map(&:event_id)}.flatten.uniq
     @events = Event.where(id: event_ids).includes(team_results: [:team]).includes(:result, :teams, :location, :team_events).uniq

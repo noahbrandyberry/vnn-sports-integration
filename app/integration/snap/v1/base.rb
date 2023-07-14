@@ -35,8 +35,8 @@ module Snap
           http_method: :get,
           endpoint: @endpoint,
           params: {limit: 1000}.merge(params)
-        )['objects'].map do |school|
-          self.new **school, **params
+        )['objects'].map do |result|
+          self.new **result, **params
         end
       end
 

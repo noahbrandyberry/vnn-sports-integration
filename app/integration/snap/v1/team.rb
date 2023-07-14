@@ -35,6 +35,7 @@ module Snap
         super
 
         Snap::V1::Event.import_all(school_id: school_id, team_id: team_id)
+        Snap::V1::Image.import_all(school_id: school_id, sport_gender_level: sport_gender_level, team_id: team_id)
       end
     end
   end
