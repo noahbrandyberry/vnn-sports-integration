@@ -38,6 +38,8 @@ module Snap
           primary_color: color1,
           secondary_color: color2,
           logo_url: logo_url,
+          facebook_url: facebook_url,
+          twitter_url: twitter_url,
           phone: phone,
           visible: true,
           location: location

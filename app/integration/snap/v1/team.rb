@@ -32,6 +32,21 @@ module Snap
         )
       end
 
+      def destroy_record
+        if existing_record
+          existing_record.team_events.destroy_all
+          existing_record.images.destroy_all
+
+          existing_record.events.each do |event|
+            event_location = event.location
+            event.destroy
+            event_location.destroy if event_location
+          end
+        end
+
+        super
+      end
+
       def import
         super
 

@@ -47,7 +47,9 @@ class School < ApplicationRecord
         key.blog = result['blog']
         key.sportshub_version = result['sportshub_version']
         key.version = result['version']
-        key.instagram = result['instagram']
+        key.instagram_url = result['instagram']
+        key.twitter_url = result['_embedded']['twitter_account'][0]['url'] if result['_embedded'].try(:[], 'twitter_account')
+        key.facebook_url = result['_embedded']['facebook_account'][0]['url'] if result['_embedded'].try(:[], 'facebook_account')
         key.onboarding = result['onboarding']
         key.location = Location.find_or_create_from_api result['_embedded']['location'][0] if result['_embedded'].try(:[], 'location')
         key.visible = true
@@ -89,7 +91,9 @@ class School < ApplicationRecord
       key.blog = result['blog']
       key.sportshub_version = result['sportshub_version']
       key.version = result['version']
-      key.instagram = result['instagram']
+      key.instagram_url = result['instagram']
+      key.twitter_url = result['_embedded']['twitter_account'][0]['url'] if result['_embedded'].try(:[], 'twitter_account')
+      key.facebook_url = result['_embedded']['facebook_account'][0]['url'] if result['_embedded'].try(:[], 'facebook_account')
       key.onboarding = result['onboarding']
       key.location = Location.find_or_create_from_api result['_embedded']['location'][0] if result['_embedded'].try(:[], 'location')
       key.visible = visible
