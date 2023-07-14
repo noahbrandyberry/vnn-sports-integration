@@ -5,6 +5,15 @@ module Snap
 
       attr_accessor :team_id, :year, :sport, :gender, :level, :sport_gender_level, :roster, :school_id
 
+      def initialize params = {}
+        super
+
+        if @sport.ends_with?(' MS')
+          @sport = @sport.delete_suffix(' MS')
+          @level = 'MS'
+        end
+      end
+
       def record_id
         "snap-#{school_id}-#{team_id}"
       end
