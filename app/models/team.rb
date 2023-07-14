@@ -15,7 +15,7 @@ class Team < ApplicationRecord
   has_many :device_subscriptions, as: :subscribable
 
   def record
-    event_results = events.includes(:result).where.not(result: {id: nil})
+    event_results = events.select{|event| event.result}
       if event_results.length > 0
       current_record = {
         win: 0,
