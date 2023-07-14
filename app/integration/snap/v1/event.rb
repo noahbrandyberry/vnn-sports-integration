@@ -36,6 +36,21 @@ module Snap
               timezone: timezone.name
             )
           end
+        else
+          unless location.present?
+            new_location_record = Location.new(
+              id: "snap-#{school_id}-#{team_id}-#{event_id}",
+              name: school_location.name,
+              address_1: school_location.address_1,
+              address_2: school_location.address_2,
+              city: school_location.city,
+              state: school_location.state,
+              zip: school_location.zip,
+              latitude: school_location.latitude,
+              longitude: school_location.longitude,
+              timezone: timezone.name
+            )
+          end
         end
 
         begin
