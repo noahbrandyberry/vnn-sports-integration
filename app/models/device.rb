@@ -12,7 +12,7 @@ class Device < ApplicationRecord
           n = Rpush::Apnsp8::Notification.new
           n.app = Rpush::Apnsp8::App.find_by_name("ios_app")
           n.device_token = device.device_token
-          n.alert = { title: 'Upcoming Event', body: "#{team.name} - #{event.name} is starting at #{event.start.in_time_zone(event.location.timezone).strftime("%l:%M%P")}" }
+          n.alert = { title: 'Upcoming Event', body: "#{team.name} - #{event.name} is starting at #{event.start.in_time_zone(event.location.try(:timezone) || 'America/New_York').strftime("%l:%M%P")}" }
           n.data = { school_id: team.school_id || team.program.school_id, team_id: team.id, event_id: event.id }
           n.category = 'UPCOMING_EVENT'
           n.save!
