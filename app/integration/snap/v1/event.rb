@@ -70,7 +70,7 @@ module Snap
 
         record_class.new(
           id: record_id,
-          name: short_name.delete_prefix('vs ').delete_prefix('at '),
+          name: description || short_name.delete_prefix('vs ').delete_prefix('at '),
           event_type: kind.downcase,
           start: start,
           tba: tba,
