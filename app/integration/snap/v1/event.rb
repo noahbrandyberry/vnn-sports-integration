@@ -93,7 +93,7 @@ module Snap
         if existing_record
           existing_record.team_events.destroy_all
           existing_record.team_results.destroy_all
-          existing_record.result.destroy
+          existing_record.result.try(:destroy)
           event_location = existing_record.location
           super
           event_location.destroy if event_location
