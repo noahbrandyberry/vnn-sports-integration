@@ -93,6 +93,7 @@ module Snap
               team_id: "snap-#{school_id}-#{team_id}",
               title: description || short_name.delete_prefix('vs ').delete_prefix('at '),
               recap: {Summary: result['story']}.to_json,
+              created: start,
               is_visible: true
             )
           ] : []
