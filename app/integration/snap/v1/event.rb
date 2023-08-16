@@ -67,6 +67,7 @@ module Snap
 
         has_result = result && result['score'].match(/^(\d)+$/) && result['opponent_score'].match(/^(\d)+$/)
         has_team_result = result && result['score'].include?('Place')
+        has_post = result && result['story'].present?
 
         record_class.new(
           id: record_id,
@@ -85,12 +86,22 @@ module Snap
           result: has_result ? Result.new(home: result[home ? 'score' : 'opponent_score'], away: result[home ? 'opponent_score' : 'score']) : nil,
           team_results: has_team_result ? [
             TeamResult.new(team_id: "snap-#{school_id}-#{team_id}", place: result['score'].gsub(/\D/, ''))
+          ] : [],
+          pressbox_posts: has_post ? [
+            PressboxPost.new(
+              id: record_id,
+              team_id: "snap-#{school_id}-#{team_id}",
+              title: description || short_name.delete_prefix('vs ').delete_prefix('at '),
+              recap: {Summary: result['story']}.to_json,
+              is_visible: true
+            )
           ] : []
         )
       end
 
       def destroy_record
         if existing_record
+          existing_record.pressbox_posts.destroy_all
           existing_record.team_events.destroy_all
           existing_record.team_results.destroy_all
           existing_record.result.try(:destroy)
