@@ -82,7 +82,7 @@ module Snap
           team_events: [
             TeamEvent.new(team_id: "snap-#{school_id}-#{team_id}", home: home, opponent_name: opponent, public_notes: description)
           ],
-          result: has_result ? Result.new(home: result['score'], away: result['opponent_score']) : nil,
+          result: has_result ? Result.new(home: result[home ? 'score' : 'opponent_score'], away: result[home ? 'opponent_score' : 'score']) : nil,
           team_results: has_team_result ? [
             TeamResult.new(team_id: "snap-#{school_id}-#{team_id}", place: result['score'].gsub(/\D/, ''))
           ] : []
