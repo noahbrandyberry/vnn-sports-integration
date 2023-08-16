@@ -1,4 +1,9 @@
 Rails.application.routes.draw do
+  namespace :admin do
+    resources :schools
+    resources :teams
+  end
+  devise_for :admins
   namespace :api do
     namespace :v1 do
       resources :devices
@@ -19,4 +24,6 @@ Rails.application.routes.draw do
   get 'privacy-policy/', to: 'home#privacy_policy', as: :privacy_policy
   get 'terms/', to: 'home#terms', as: :terms
   root 'home#index'
+
+  get '*path', to: 'home#index'
 end
