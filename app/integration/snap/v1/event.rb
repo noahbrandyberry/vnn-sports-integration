@@ -63,6 +63,11 @@ module Snap
           end
         end
 
+        result = results.first
+
+        has_result = result && result['score'].match(/^(\d)+$/) && result['opponent_score'].match(/^(\d)+$/)
+        has_team_result = result && result['score'].include?('Place')
+
         record_class.new(
           id: record_id,
           name: short_name.delete_prefix('vs ').delete_prefix('at '),
@@ -76,13 +81,19 @@ module Snap
           location_name: location,
           team_events: [
             TeamEvent.new(team_id: "snap-#{school_id}-#{team_id}", home: home, opponent_name: opponent, public_notes: description)
-          ]
+          ],
+          result: has_result ? Result.new(home: result['score'], away: result['opponent_score']) : nil,
+          team_results: has_team_result ? [
+            TeamResult.new(team_id: "snap-#{school_id}-#{team_id}", place: result['score'].gsub(/\D/, ''))
+          ] : []
         )
       end
 
       def destroy_record
         if existing_record
           existing_record.team_events.destroy_all
+          existing_record.team_results.destroy_all
+          existing_record.result.destroy
           event_location = existing_record.location
           super
           event_location.destroy if event_location
