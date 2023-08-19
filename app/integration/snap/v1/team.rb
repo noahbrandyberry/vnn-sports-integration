@@ -48,10 +48,13 @@ module Snap
 
       def destroy_record
         if existing_record
+          existing_record.pressbox_posts.destroy_all
           existing_record.team_events.destroy_all
           existing_record.images.destroy_all
 
           existing_record.events.each do |event|
+            event.team_results.destroy_all
+            event.result.try(:destroy)
             event_location = event.location
             event.destroy
             event_location.destroy if event_location
