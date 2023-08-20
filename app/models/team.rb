@@ -9,6 +9,7 @@ class Team < ApplicationRecord
   belongs_to :sport, optional: true
 
   has_many :team_events
+  has_many :team_results
   has_many :events, through: :team_events
   has_many :pressbox_posts
   has_many :images
