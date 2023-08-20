@@ -52,6 +52,7 @@ module Snap
             team.pressbox_posts.destroy_all
             team.team_events.destroy_all
             team.images.destroy_all
+            team.team_results.destroy_all
 
             team.events.each do |event|
               event.team_results.destroy_all

@@ -50,6 +50,7 @@ module Snap
         if existing_record
           existing_record.pressbox_posts.destroy_all
           existing_record.team_events.destroy_all
+          existing_record.team_results.destroy_all
           existing_record.images.destroy_all
 
           existing_record.events.each do |event|
