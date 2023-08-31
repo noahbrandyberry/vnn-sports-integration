@@ -1,6 +1,6 @@
 class Api::V1::SchoolsController < ApplicationController
   protect_from_forgery with: :null_session
-  before_action :set_school, only: %i[ show upcoming_events ]
+  before_action :set_school, only: %i[ show upcoming_events recent_results ]
 
   # GET /schools
   # GET /schools.json
@@ -60,6 +60,12 @@ class Api::V1::SchoolsController < ApplicationController
         @calendar.publish
       end
     end
+  end
+
+  def recent_results
+    @teams = @school.current_teams
+    @teams = @teams.where(id: params[:team_id]) if params[:team_id].present?
+    @events = @teams.map{|team| team.events.includes(:result).where(start: 2.week.ago..Time.now).where.not(result: {id: nil}).last(1)}.flatten.uniq
   end
 
   private
