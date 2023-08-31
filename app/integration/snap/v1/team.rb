@@ -50,7 +50,7 @@ module Snap
               grad_year: player['grad_year'], 
               jersey: player['jersey'], 
               position: player['position'], 
-              height: player['height'].to_s.gsub(/\D/, '').present? ? player['height'] : '', 
+              height: player['height'].to_s.gsub(/[^1-9]/, '').present? ? player['height'] : '', 
               weight: player['weight']
             )
           },
