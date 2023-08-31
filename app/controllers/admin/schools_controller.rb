@@ -1,6 +1,5 @@
 class Admin::SchoolsController < ApplicationController
   before_action :set_school, only: %i[ show edit update destroy ]
-  before_action :set_current_school
   layout 'admin'
 
   # GET /schools or /schools.json
@@ -64,6 +63,7 @@ class Admin::SchoolsController < ApplicationController
     # Use callbacks to share common setup or constraints between actions.
     def set_school
       @school = School.find(params[:id])
+      @current_school = School.find(params[:id])
     end
 
     # Only allow a list of trusted parameters through.

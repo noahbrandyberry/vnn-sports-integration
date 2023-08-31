@@ -24,6 +24,4 @@ Rails.application.routes.draw do
   get 'privacy-policy/', to: 'home#privacy_policy', as: :privacy_policy
   get 'terms/', to: 'home#terms', as: :terms
   root 'home#index'
-
-  get '*path', to: 'home#index'
 end
