@@ -3,7 +3,7 @@ module Snap
     class Team < Base
       @endpoint = 'teams'
 
-      attr_accessor :team_id, :year, :sport, :gender, :level, :sport_gender_level, :roster, :school_id
+      attr_accessor :team_id, :year, :sport, :gender, :level, :sport_gender_level, :include_roster, :roster, :school_id
 
       def initialize params = {}
         super
@@ -42,7 +42,18 @@ module Snap
           level: level_record,
           school_id: "snap-#{school_id}",
           gender: gender_record,
-          sport: sport_record
+          sport: sport_record,
+          players: roster.map { |player| 
+            Player.new(
+              first_name: player['first_name'], 
+              last_name: player['last_name'], 
+              grad_year: player['grad_year'], 
+              jersey: player['jersey'], 
+              position: player['position'], 
+              height: player['height'].gsub(/\D/, '').present? ? player['height'] : '', 
+              weight: player['weight']
+            )
+          },
         )
       end
 
@@ -52,6 +63,7 @@ module Snap
           existing_record.team_events.destroy_all
           existing_record.team_results.destroy_all
           existing_record.images.destroy_all
+          existing_record.players.destroy_all
 
           existing_record.events.each do |event|
             event.team_results.destroy_all

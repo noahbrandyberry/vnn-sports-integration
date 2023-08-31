@@ -75,7 +75,7 @@ module Snap
       def import
         super
 
-        Snap::V1::Team.import_all(school_id: school_id, year: '2023-2024')
+        Snap::V1::Team.import_all(school_id: school_id, year: '2023-2024', include_roster: true)
       end
     end
   end

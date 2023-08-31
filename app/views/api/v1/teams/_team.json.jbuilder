@@ -1,4 +1,4 @@
-json.extract! team, :id, :name, :label, :home_description, :hide_gender, :year, :season, :level, :program, :created_at, :updated_at, :images
+json.extract! team, :id, :name, :label, :home_description, :hide_gender, :year, :season, :level, :program, :created_at, :updated_at, :images, :players
 json.url api_v1_school_team_url(team.school_id, team, format: :json)
 json.gender team.gender || team.program.try(:gender)
 json.sport team.sport || team.program.try(:sport)

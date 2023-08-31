@@ -14,6 +14,7 @@ class Team < ApplicationRecord
   has_many :pressbox_posts
   has_many :images
   has_many :device_subscriptions, as: :subscribable
+  has_many :players
 
   def record
     event_results = events.select{|event| event.result}
