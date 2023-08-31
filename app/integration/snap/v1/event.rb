@@ -63,7 +63,7 @@ module Snap
           end
         end
 
-        result = results.first
+        result = results.find { |r| r['score'].present? }
 
         has_result = result && result['score'].match(/^(\d)+$/) && result['opponent_score'].match(/^(\d)+$/)
         has_team_result = result && result['score'].include?('Place')
