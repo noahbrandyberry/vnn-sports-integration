@@ -1,4 +1,5 @@
 class Admin::TeamsController < ApplicationController
+  before_action :authenticate_admin!
   before_action :require_current_school
   before_action :set_team, only: %i[ show edit update destroy ]
   layout 'admin'
@@ -14,7 +15,7 @@ class Admin::TeamsController < ApplicationController
 
   # GET /teams/new
   def new
-    @team = Team.new
+    @team = @current_school.teams.new
   end
 
   # GET /teams/1/edit
@@ -23,7 +24,7 @@ class Admin::TeamsController < ApplicationController
 
   # POST /teams or /teams.json
   def create
-    @team = Team.new(team_params)
+    @team = @current_school.teams.new(team_params)
 
     respond_to do |format|
       if @team.save
@@ -67,6 +68,6 @@ class Admin::TeamsController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def team_params
-      params.require(:team).permit(:name, :label, :photo_url, :home_description, :hide_gender, :year_id, :season_id, :level_id)
+      params.require(:team).permit(:name, :photo_url, :home_description, :year_id, :season_id, :level_id, :sport_id)
     end
 end

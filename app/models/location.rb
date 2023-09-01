@@ -33,4 +33,13 @@ class Location < ApplicationRecord
   def to_s
     "#{address_1} #{address_2} #{city}, #{state} #{zip}"
   end
+
+  def store_metadata
+    geocode
+    begin
+      timezone = Timezone.lookup(latitude, longitude).name
+    rescue StandardError => e
+      timezone = Timezone['America/New_York'].name
+    end
+  end
 end

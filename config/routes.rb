@@ -4,6 +4,13 @@ Rails.application.routes.draw do
     resources :teams
   end
   devise_for :admins
+
+  as :admin do
+    get 'admins/edit', to: 'devise/registrations#edit', as: :edit_admin_registration
+    put 'admins', to: 'devise/registrations#update', as: :admin_registration
+    get 'admin/schools', as: :admin_root
+  end
+
   namespace :api do
     namespace :v1 do
       resources :devices

@@ -1,77 +1,18 @@
-<div id="<%= dom_id school %>">
-  <p class="my-5">
-    <strong class="block font-medium mb-1">Name:</strong>
-    <%= school.name %>
-  </p>
+<li id="<%= dom_id school %>">
+  <a href="<%= admin_school_path school %>" class="flex justify-between items-center gap-x-6 py-5">
+    <div class="flex min-w-0 gap-x-4 items-center">
+      <div class="p-2 flex-none bg-white rounded">
+      <img class="h-12 w-12" src="<%= school.logo_url %>" alt="">
 
-  <p class="my-5">
-    <strong class="block font-medium mb-1">Mascot:</strong>
-    <%= school.mascot %>
-  </p>
-
-  <p class="my-5">
-    <strong class="block font-medium mb-1">Url:</strong>
-    <%= school.url %>
-  </p>
-
-  <p class="my-5">
-    <strong class="block font-medium mb-1">Logo url:</strong>
-    <%= school.logo_url %>
-  </p>
-
-  <p class="my-5">
-    <strong class="block font-medium mb-1">Primary color:</strong>
-    <%= school.primary_color %>
-  </p>
-
-  <p class="my-5">
-    <strong class="block font-medium mb-1">Secondary color:</strong>
-    <%= school.secondary_color %>
-  </p>
-
-  <p class="my-5">
-    <strong class="block font-medium mb-1">Tertiary color:</strong>
-    <%= school.tertiary_color %>
-  </p>
-
-  <p class="my-5">
-    <strong class="block font-medium mb-1">Athletic director:</strong>
-    <%= school.athletic_director %>
-  </p>
-
-  <p class="my-5">
-    <strong class="block font-medium mb-1">Phone:</strong>
-    <%= school.phone %>
-  </p>
-
-  <p class="my-5">
-    <strong class="block font-medium mb-1">Email:</strong>
-    <%= school.email %>
-  </p>
-
-  <p class="my-5">
-    <strong class="block font-medium mb-1">Instagram url:</strong>
-    <%= school.instagram_url %>
-  </p>
-
-  <p class="my-5">
-    <strong class="block font-medium mb-1">Twitter url:</strong>
-    <%= school.twitter_url %>
-  </p>
-
-  <p class="my-5">
-    <strong class="block font-medium mb-1">Facebook url:</strong>
-    <%= school.facebook_url %>
-  </p>
-
-  <p class="my-5">
-    <strong class="block font-medium mb-1">Location:</strong>
-    <%= school.location_id %>
-  </p>
-
-  <% if action_name != "show" %>
-    <%= link_to "Select this school", [:admin, school], class: "rounded-lg py-3 px-5 bg-gray-100 inline-block font-medium" %>
-    <%= link_to 'Edit this school', edit_admin_school_path(school), class: "rounded-lg py-3 ml-2 px-5 bg-gray-100 inline-block font-medium" %>
-    <hr class="mt-6">
-  <% end %>
-</div>
+      </div>
+      <div class="min-w-0 flex-auto">
+        <p class="text-sm font-semibold leading-6 text-gray-900"><%= school.name %></p>
+        <p class="mt-1 truncate text-xs leading-5 text-gray-500"><%= school.location %></p>
+      </div>
+    </div>
+    <div class="hidden shrink-0 sm:flex sm:flex-col sm:items-end">
+      <p class="text-sm leading-6 text-gray-900"><%= school.athletic_director %></p>
+      <p class="mt-1 text-xs leading-5 text-gray-500"><%= pluralize(school.teams.length, "Team") %></p>
+    </div>
+  </a>
+</li>

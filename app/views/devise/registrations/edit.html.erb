@@ -1,12 +1,22 @@
 <% content_for :title, "Edit Profile" %>
 
 <div class="mx-auto md:w-2/3 w-full">
-  <%= form_for(resource, as: resource_name, url: registration_path(resource_name), html: { method: :put, class: "contents" }) do |f| %>
+  <%= form_for(resource, as: resource_name, url: admin_registration_path, html: { method: :put, class: "contents" }) do |f| %>
     <%= render "devise/shared/error_messages", resource: resource %>
 
     <div class="my-5">
+      <%= f.label :first_name %><br />
+      <%= f.text_field :first_name, autocomplete: "first-name", class: "block shadow rounded-md border border-gray-200 outline-none px-3 py-2 mt-2 w-full" %>
+    </div>
+
+    <div class="my-5">
+      <%= f.label :last_name %><br />
+      <%= f.text_field :last_name, autocomplete: "last-name", class: "block shadow rounded-md border border-gray-200 outline-none px-3 py-2 mt-2 w-full" %>
+    </div>
+
+    <div class="my-5">
       <%= f.label :email %><br />
-      <%= f.email_field :email, autofocus: true, autocomplete: "email", class: "block shadow rounded-md border border-gray-200 outline-none px-3 py-2 mt-2 w-full" %>
+      <%= f.email_field :email, autocomplete: "email", class: "block shadow rounded-md border border-gray-200 outline-none px-3 py-2 mt-2 w-full" %>
     </div>
 
     <% if devise_mapping.confirmable? && resource.pending_reconfirmation? %>
@@ -37,11 +47,5 @@
       <%= f.submit "Update", class: "rounded-lg py-3 px-5 bg-primary text-white inline-block font-medium cursor-pointer" %>
     </div>
   <% end %>
-
-  <div class="inline-block ml-2">
-    <%= button_to "Cancel my account", registration_path(resource_name), data: { confirm: "Are you sure?", turbo_confirm: "Are you sure?" }, method: :delete, class: "ml-2 rounded-lg py-3 px-5 bg-gray-100 inline-block font-medium" %>
-  </div>
-  
-  <%= link_to "Back", :back, class: "ml-2 rounded-lg py-3 px-5 bg-gray-100 inline-block font-medium" %>
 </div>
 

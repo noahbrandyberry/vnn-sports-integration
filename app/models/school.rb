@@ -3,6 +3,10 @@ class School < ApplicationRecord
   has_many :programs
   has_many :teams
   has_many :device_subscriptions, as: :subscribable
+  has_and_belongs_to_many :admins
+  validates :name, presence: true
+  validates :location, presence: true
+  accepts_nested_attributes_for :location, allow_destroy: true
 
   def all_teams
     (teams + programs.map(&:teams)).flatten.uniq
@@ -151,5 +155,14 @@ class School < ApplicationRecord
 
   def to_s
     name
+  end
+
+  def socials
+    all_socials = ['instagram', 'twitter', 'facebook'].map do |social| 
+      social_url = self.send("#{social}_url") 
+      [social, URI(social_url).path.split('/').last, social_url]
+    end
+    
+    all_socials.select{ |social| social.last.present? }
   end
 end

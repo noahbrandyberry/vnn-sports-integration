@@ -37,49 +37,67 @@
   </div>
 
   <div class="my-5">
-    <%= form.label :secondary_color %>
-    <%= form.text_field :secondary_color, class: "block shadow rounded-md border border-gray-200 outline-none px-3 py-2 mt-2 w-full" %>
-  </div>
-
-  <div class="my-5">
-    <%= form.label :tertiary_color %>
-    <%= form.text_field :tertiary_color, class: "block shadow rounded-md border border-gray-200 outline-none px-3 py-2 mt-2 w-full" %>
-  </div>
-
-  <div class="my-5">
     <%= form.label :athletic_director %>
     <%= form.text_field :athletic_director, class: "block shadow rounded-md border border-gray-200 outline-none px-3 py-2 mt-2 w-full" %>
   </div>
 
   <div class="my-5">
     <%= form.label :phone %>
-    <%= form.text_field :phone, class: "block shadow rounded-md border border-gray-200 outline-none px-3 py-2 mt-2 w-full" %>
+    <%= form.phone_field :phone, class: "block shadow rounded-md border border-gray-200 outline-none px-3 py-2 mt-2 w-full" %>
   </div>
 
   <div class="my-5">
     <%= form.label :email %>
-    <%= form.text_field :email, class: "block shadow rounded-md border border-gray-200 outline-none px-3 py-2 mt-2 w-full" %>
+    <%= form.email_field :email, class: "block shadow rounded-md border border-gray-200 outline-none px-3 py-2 mt-2 w-full" %>
   </div>
 
-  <div class="my-5">
-    <%= form.label :instagram_url %>
-    <%= form.text_field :instagram_url, class: "block shadow rounded-md border border-gray-200 outline-none px-3 py-2 mt-2 w-full" %>
+  <div class="my-5 flex gap-5 flex-col md:flex-row">
+    <div class="flex-1">
+      <%= form.label :instagram_url, "Instagram URL" %>
+      <%= form.text_field :instagram_url, class: "block shadow rounded-md border border-gray-200 outline-none px-3 py-2 mt-2 w-full" %>
+    </div>
+
+    <div class="flex-1">
+      <%= form.label :twitter_url, "Twitter URL" %>
+      <%= form.text_field :twitter_url, class: "block shadow rounded-md border border-gray-200 outline-none px-3 py-2 mt-2 w-full" %>
+    </div>
+
+    <div class="flex-1">
+      <%= form.label :facebook_url, "Facebook URL" %>
+      <%= form.text_field :facebook_url, class: "block shadow rounded-md border border-gray-200 outline-none px-3 py-2 mt-2 w-full" %>
+    </div>
   </div>
 
-  <div class="my-5">
-    <%= form.label :twitter_url %>
-    <%= form.text_field :twitter_url, class: "block shadow rounded-md border border-gray-200 outline-none px-3 py-2 mt-2 w-full" %>
-  </div>
+  <%= form.fields_for :location do |fields| %>
+    <div class="my-5 flex gap-5 flex-col md:flex-row">
+      <div class="flex-1">
+        <%= fields.label :address_1 %>
+        <%= fields.text_field :address_1, class: "block shadow rounded-md border border-gray-200 outline-none px-3 py-2 mt-2 w-full" %>
+      </div>
 
-  <div class="my-5">
-    <%= form.label :facebook_url %>
-    <%= form.text_field :facebook_url, class: "block shadow rounded-md border border-gray-200 outline-none px-3 py-2 mt-2 w-full" %>
-  </div>
+      <div class="flex-1">
+        <%= fields.label :address_2 %>
+        <%= fields.text_field :address_2, class: "block shadow rounded-md border border-gray-200 outline-none px-3 py-2 mt-2 w-full" %>
+      </div>
+    </div>
 
-  <div class="my-5">
-    <%= form.label :location_id %>
-    <%= form.text_field :location_id, class: "block shadow rounded-md border border-gray-200 outline-none px-3 py-2 mt-2 w-full" %>
-  </div>
+    <div class="my-5 flex gap-5 flex-col md:flex-row">
+      <div class="flex-1">
+        <%= fields.label :city %>
+        <%= fields.text_field :city, class: "block shadow rounded-md border border-gray-200 outline-none px-3 py-2 mt-2 w-full" %>
+      </div>
+
+      <div class="flex-1">
+        <%= fields.label :state %>
+        <%= fields.text_field :state, class: "block shadow rounded-md border border-gray-200 outline-none px-3 py-2 mt-2 w-full" %>
+      </div>
+
+      <div class="flex-1">
+        <%= fields.label :zip %>
+        <%= fields.text_field :zip, class: "block shadow rounded-md border border-gray-200 outline-none px-3 py-2 mt-2 w-full" %>
+      </div>
+    </div>
+  <% end %>
 
   <div class="inline">
     <%= form.submit class: "rounded-lg py-3 px-5 bg-primary text-white inline-block font-medium cursor-pointer" %>
