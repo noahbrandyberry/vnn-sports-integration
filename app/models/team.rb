@@ -90,4 +90,8 @@ class Team < ApplicationRecord
     team.save
     team
   end
+
+  def to_s
+    name
+  end
 end

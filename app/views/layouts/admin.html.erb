@@ -1,4 +1,4 @@
-<% nav_items = @current_school.persisted? ? [['Dashboard', admin_school_path(@current_school)], ['Teams', admin_teams_path], ['Events', '#']] : [] %>
+<% nav_items = @current_school.persisted? ? [['Dashboard', admin_school_path(@current_school)], ['Teams', admin_teams_path], ['Imports', admin_import_sources_path], ['Events', '#']] : [] %>
 <% profile_nav_items = [['Your Profile', edit_admin_registration_path], ['Sign out', destroy_admin_session_path, 'delete']] %>
 <% schools = current_admin ? current_admin.schools.where.not(id: @current_school) : [] %>
 <!DOCTYPE html>

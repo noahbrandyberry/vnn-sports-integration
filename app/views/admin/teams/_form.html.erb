@@ -28,7 +28,7 @@
 
   <div class="my-5">
     <%= form.label :sport_id %>
-    <%= form.collection_select :sport_id, Sport.order(:name).reverse, :id, :name, {prompt: '-- Select Sport --'}, {class: "block shadow rounded-md border border-gray-200 outline-none px-3 py-2 mt-2 w-full"} %>
+    <%= form.collection_select :sport_id, Sport.order(:name), :id, :name, {prompt: '-- Select Sport --'}, {class: "block shadow rounded-md border border-gray-200 outline-none px-3 py-2 mt-2 w-full"} %>
   </div>
 
   <div class="my-5">

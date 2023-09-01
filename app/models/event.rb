@@ -1,10 +1,11 @@
 class Event < ApplicationRecord
   belongs_to :location, optional: true
-  has_many :team_events
+  has_many :team_events, dependent: :destroy
   has_many :teams, through: :team_events
   has_many :pressbox_posts
   has_many :team_results
   has_one :result
+  belongs_to :import_source, optional: true
 
   def result_status team
     is_home_team = host_team === team

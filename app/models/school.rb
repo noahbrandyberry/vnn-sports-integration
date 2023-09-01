@@ -3,6 +3,7 @@ class School < ApplicationRecord
   has_many :programs
   has_many :teams
   has_many :device_subscriptions, as: :subscribable
+  has_many :import_sources
   has_and_belongs_to_many :admins
   validates :name, presence: true
   validates :location, presence: true
@@ -164,5 +165,9 @@ class School < ApplicationRecord
     end
     
     all_socials.select{ |social| social.last.present? }
+  end
+
+  def timezone
+    location.timezone || 'America/New_York'
   end
 end

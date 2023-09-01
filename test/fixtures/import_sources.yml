@@ -1,0 +1,15 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  name: MyString
+  url: MyString
+  sport: one
+  gender: one
+  level: one
+
+two:
+  name: MyString
+  url: MyString
+  sport: two
+  gender: two
+  level: two

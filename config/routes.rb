@@ -1,5 +1,7 @@
 Rails.application.routes.draw do
   namespace :admin do
+    post 'import_sources/preview', to: 'import_sources#preview'
+    resources :import_sources
     resources :schools
     resources :teams
   end

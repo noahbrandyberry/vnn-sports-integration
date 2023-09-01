@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2023_09_01_011942) do
+ActiveRecord::Schema.define(version: 2023_09_01_083742) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -81,6 +81,8 @@ ActiveRecord::Schema.define(version: 2023_09_01_011942) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.string "location_name"
+    t.bigint "import_source_id"
+    t.index ["import_source_id"], name: "index_events_on_import_source_id"
     t.index ["location_id"], name: "index_events_on_location_id"
   end
 
@@ -97,6 +99,21 @@ ActiveRecord::Schema.define(version: 2023_09_01_011942) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["team_id"], name: "index_images_on_team_id"
+  end
+
+  create_table "import_sources", force: :cascade do |t|
+    t.string "name"
+    t.string "url"
+    t.string "school_id", null: false
+    t.bigint "sport_id"
+    t.bigint "gender_id"
+    t.bigint "level_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["gender_id"], name: "index_import_sources_on_gender_id"
+    t.index ["level_id"], name: "index_import_sources_on_level_id"
+    t.index ["school_id"], name: "index_import_sources_on_school_id"
+    t.index ["sport_id"], name: "index_import_sources_on_sport_id"
   end
 
   create_table "integration_tokens", force: :cascade do |t|
@@ -395,8 +412,13 @@ ActiveRecord::Schema.define(version: 2023_09_01_011942) do
   end
 
   add_foreign_key "device_subscriptions", "devices"
+  add_foreign_key "events", "import_sources"
   add_foreign_key "events", "locations"
   add_foreign_key "images", "teams"
+  add_foreign_key "import_sources", "genders"
+  add_foreign_key "import_sources", "levels"
+  add_foreign_key "import_sources", "schools"
+  add_foreign_key "import_sources", "sports"
   add_foreign_key "media", "teams"
   add_foreign_key "players", "teams"
   add_foreign_key "pressbox_posts", "events"
