@@ -1,15 +1,21 @@
+<% content_for :title, @team.name %>
+<% content_for :cta, (link_to 'Edit', edit_admin_team_path(@team), class: "rounded-lg py-3 px-5 bg-primary text-white block font-medium") %>
+
 <div class="mx-auto md:w-2/3 w-full flex">
-  <div class="mx-auto">
-    <% if notice.present? %>
-      <p class="py-2 px-3 bg-green-50 mb-5 text-green-500 font-medium rounded-lg inline-block" id="notice"><%= notice %></p>
-    <% end %>
-
-    <%= render @team %>
-
-    <%= link_to 'Edit this team', edit_admin_team_path(@team), class: "mt-2 rounded-lg py-3 px-5 bg-gray-100 inline-block font-medium" %>
-    <div class="inline-block ml-2">
-      <%= button_to 'Destroy this team', admin_team_path(@team), method: :delete, class: "mt-2 rounded-lg py-3 px-5 bg-gray-100 font-medium" %>
+  <div class="w-full divide-y divide-gray-100 rounded-md shadow p-4 bg-white">
+    <div class="px-4 sm:px-0 flex justify-between items-center">
+      <div>
+        <h3 class="text-base font-semibold leading-7 text-gray-900"><%= @team.name %></h3>
+        <p class="mt-1 max-w-2xl text-sm leading-6 text-gray-500"></p>
+      </div>
+      <% if @team.photo_url.present? %>
+        <img class="h-12 w-12" src="<%= @team.photo_url %>" alt="">
+      <% end %>
     </div>
-    <%= link_to 'Back to teams', admin_teams_path, class: "ml-2 rounded-lg py-3 px-5 bg-gray-100 inline-block font-medium" %>
+    <div class="mt-6 border-t border-gray-100">
+      <dl class="divide-y divide-gray-100">
+        
+      </dl>
+    </div>
   </div>
 </div>
