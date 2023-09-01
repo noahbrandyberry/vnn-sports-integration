@@ -13,8 +13,5 @@
   "scripts": {
     "build": "esbuild app/javascript/*.* --bundle --sourcemap --outdir=app/assets/builds --public-path=/assets",
     "build:css": "tailwindcss -i ./app/assets/stylesheets/application.tailwind.css -o ./app/assets/builds/application.css --minify && sass ./app/assets/stylesheets/fonts.sass.scss ./app/assets/builds/fonts.css --no-source-map --load-path=node_modules"
-  },
-  "devDependencies": {
-    "@tanstack/eslint-plugin-query": "^4.29.25"
   }
 }
