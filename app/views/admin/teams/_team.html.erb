@@ -1,0 +1,47 @@
+<div id="<%= dom_id team %>">
+  <p class="my-5">
+    <strong class="block font-medium mb-1">Name:</strong>
+    <%= team.name %>
+  </p>
+
+  <p class="my-5">
+    <strong class="block font-medium mb-1">Label:</strong>
+    <%= team.label %>
+  </p>
+
+  <p class="my-5">
+    <strong class="block font-medium mb-1">Photo url:</strong>
+    <%= team.photo_url %>
+  </p>
+
+  <p class="my-5">
+    <strong class="block font-medium mb-1">Home description:</strong>
+    <%= team.home_description %>
+  </p>
+
+  <p class="my-5">
+    <strong class="block font-medium mb-1">Hide gender:</strong>
+    <%= team.hide_gender %>
+  </p>
+
+  <p class="my-5">
+    <strong class="block font-medium mb-1">Year:</strong>
+    <%= team.year %>
+  </p>
+
+  <p class="my-5">
+    <strong class="block font-medium mb-1">Season:</strong>
+    <%= team.season %>
+  </p>
+
+  <p class="my-5">
+    <strong class="block font-medium mb-1">Level:</strong>
+    <%= team.level %>
+  </p>
+
+  <% if action_name != "show" %>
+    <%= link_to "Show this team", [:admin, team], class: "rounded-lg py-3 px-5 bg-gray-100 inline-block font-medium" %>
+    <%= link_to 'Edit this team', edit_admin_team_path(team), class: "rounded-lg py-3 ml-2 px-5 bg-gray-100 inline-block font-medium" %>
+    <hr class="mt-6">
+  <% end %>
+</div>

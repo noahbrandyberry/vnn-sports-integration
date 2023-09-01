@@ -1,0 +1,52 @@
+<%= form_with(model: [:admin, team], class: "contents") do |form| %>
+  <% if team.errors.any? %>
+    <div id="error_explanation" class="bg-red-50 text-red-500 px-3 py-2 font-medium rounded-lg mt-3">
+      <h2><%= pluralize(team.errors.count, "error") %> prohibited this team from being saved:</h2>
+
+      <ul>
+        <% team.errors.each do |error| %>
+          <li><%= error.full_message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="my-5">
+    <%= form.label :name %>
+    <%= form.text_field :name, class: "block shadow rounded-md border border-gray-200 outline-none px-3 py-2 mt-2 w-full" %>
+  </div>
+
+  <div class="my-5">
+    <%= form.label :photo_url %>
+    <%= form.text_field :photo_url, class: "block shadow rounded-md border border-gray-200 outline-none px-3 py-2 mt-2 w-full" %>
+  </div>
+
+  <div class="my-5">
+    <%= form.label :home_description, 'Description' %>
+    <%= form.text_area :home_description, rows: 4, class: "block shadow rounded-md border border-gray-200 outline-none px-3 py-2 mt-2 w-full" %>
+  </div>
+
+  <div class="my-5">
+    <%= form.label :year_id %>
+    <%= form.collection_select :year_id, Year.order(:name), :id, :name, {prompt: '-- Select Year --'}, {class: "block shadow rounded-md border border-gray-200 outline-none px-3 py-2 mt-2 w-full"} %>
+  </div>
+
+  <div class="my-5">
+    <%= form.label :season_id %>
+    <%= form.collection_select :season_id, Season.order(:name), :id, :name, {prompt: '-- Select Season --'}, {class: "block shadow rounded-md border border-gray-200 outline-none px-3 py-2 mt-2 w-full"} %>
+  </div>
+
+  <div class="my-5">
+    <%= form.label :level_id %>
+    <%= form.collection_select :level_id, Level.order(:name).reverse, :id, :name, {prompt: '-- Select Level --'}, {class: "block shadow rounded-md border border-gray-200 outline-none px-3 py-2 mt-2 w-full"} %>
+  </div>
+
+  <div class="my-5">
+    <%= form.label :sport_id %>
+    <%= form.collection_select :sport_id, Sport.order(:name).reverse, :id, :name, {prompt: '-- Select Sport --'}, {class: "block shadow rounded-md border border-gray-200 outline-none px-3 py-2 mt-2 w-full"} %>
+  </div>
+
+  <div class="inline">
+    <%= form.submit class: "rounded-lg py-3 px-5 bg-primary text-white inline-block font-medium cursor-pointer" %>
+  </div>
+<% end %>

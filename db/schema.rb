@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2023_08_31_014653) do
+ActiveRecord::Schema.define(version: 2023_09_01_011942) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -35,10 +35,19 @@ ActiveRecord::Schema.define(version: 2023_08_31_014653) do
     t.datetime "locked_at", precision: 6
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.string "first_name"
+    t.string "last_name"
     t.index ["confirmation_token"], name: "index_admins_on_confirmation_token", unique: true
     t.index ["email"], name: "index_admins_on_email", unique: true
     t.index ["reset_password_token"], name: "index_admins_on_reset_password_token", unique: true
     t.index ["unlock_token"], name: "index_admins_on_unlock_token", unique: true
+  end
+
+  create_table "admins_schools", id: false, force: :cascade do |t|
+    t.string "school_id"
+    t.bigint "admin_id"
+    t.index ["admin_id"], name: "index_admins_schools_on_admin_id"
+    t.index ["school_id"], name: "index_admins_schools_on_school_id"
   end
 
   create_table "device_subscriptions", force: :cascade do |t|
