@@ -2,6 +2,10 @@
 # yarn lockfile v1
 
 
+"@fortawesome/fontawesome-free@^5.15.4":
+  version "5.15.4"
+  resolved "https://npm.fontawesome.com/@fortawesome/fontawesome-free/-/5.15.4/fontawesome-free-5.15.4.tgz#ecda5712b61ac852c760d8b3c79c96adca5554e5"
+  integrity sha512-eYm8vijH/hpzr/6/1CJ/V/Eb1xQFW2nnUKArb3z+yUWv7HTwj6M7SP957oMjfZjAHU6qpoNc2wQvIxBLWYa/Jg==
 
 "@hotwired/stimulus@>=3.0.0":
   version "3.2.1"
@@ -35,11 +39,6 @@
   version "7.0.1"
   resolved "https://registry.yarnpkg.com/@rails/actioncable/-/actioncable-7.0.1.tgz#8f383b672e142d009f89b725d49b0832d99da74a"
   integrity sha512-lbGc1z2RXdiWZJE/8o2GSe2gek82EoKd2YvjRrqV//0J3/JImONUYwZ2XPmS1R9R2oth1XlIG0YidqdeTty0TA==
-
-"@tanstack/eslint-plugin-query@^4.29.25":
-  version "4.29.25"
-  resolved "https://registry.yarnpkg.com/@tanstack/eslint-plugin-query/-/eslint-plugin-query-4.29.25.tgz#422693f8a08d3dc98ca22135913b9a36ae51510c"
-  integrity sha512-wn+My+vBVTH/BZouf5syhUiUrCYiuAwRdepO/gjn6BBwYyN7XQ8cS/ooO0h2ut0h1G3UO52q26An8jYJCjR29w==
 
 anymatch@~3.1.2:
   version "3.1.2"
