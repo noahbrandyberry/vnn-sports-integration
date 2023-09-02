@@ -1,5 +1,6 @@
 class Gender < ApplicationRecord
   has_many :programs
+  has_many :teams
   
   def self.find_or_create_from_api result
     gender = find_by id: result['id']

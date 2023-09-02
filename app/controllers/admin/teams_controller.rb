@@ -6,7 +6,7 @@ class Admin::TeamsController < ApplicationController
 
   # GET /teams or /teams.json
   def index
-    @teams = @current_school.teams
+    @teams = @current_school.teams.includes(:season, :players, :events)
   end
 
   # GET /teams/1 or /teams/1.json

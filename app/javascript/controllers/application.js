@@ -13,6 +13,9 @@ import {
   Toggle,
   Slideover,
 } from "tailwindcss-stimulus-components";
+import Form from "./forms";
+
+application.register("forms", Form);
 application.register("alert", Alert);
 application.register("autosave", Autosave);
 application.register("dropdown", Dropdown);

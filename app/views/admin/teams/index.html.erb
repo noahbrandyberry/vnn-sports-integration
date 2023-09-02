@@ -2,13 +2,9 @@
 <% content_for :cta, (link_to 'New team', new_admin_team_path, class: "rounded-lg py-3 px-5 bg-primary text-white block font-medium") %>
 
 <div class="w-full">
-  <% if notice.present? %>
-    <p class="py-2 px-3 bg-green-50 mb-5 text-green-500 font-medium rounded-lg inline-block" id="notice"><%= notice %></p>
-  <% end %>
-
   <div id="teams" class="min-w-full">
-    <ul role="list" class="divide-y divide-gray-400">
+    <ul role="list" class="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
       <%= render @teams %>
     </ul>
-  </div>
+  </ul>
 </div>

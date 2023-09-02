@@ -28,7 +28,7 @@ class Admin::ImportSourcesController < ApplicationController
 
     respond_to do |format|
       if @import_source.save
-        @import_source.sync
+        ImportSourceJob.perform_later @import_source
         format.html { redirect_to admin_import_source_url(@import_source), notice: "Import source was successfully created." }
         format.json { render :show, status: :created, location: @import_source }
       else
@@ -42,6 +42,7 @@ class Admin::ImportSourcesController < ApplicationController
   def update
     respond_to do |format|
       if @import_source.update(import_source_params)
+        ImportSourceJob.perform_later @import_source
         format.html { redirect_to admin_import_source_url(@import_source), notice: "Import source was successfully updated." }
         format.json { render :show, status: :ok, location: @import_source }
       else
@@ -70,9 +71,9 @@ class Admin::ImportSourcesController < ApplicationController
 
     respond_to do |format|
       if @import_source.persisted?
-        format.html { render :edit, status: :unprocessable_entity }
+        format.html { render :edit, status: @import_source.valid? ? :found : :unprocessable_entity }
       else
-        format.html { render :new, status: :unprocessable_entity }
+        format.html { render :new, status: @import_source.valid? ? :found : :unprocessable_entity }
       end
     end
   end
@@ -85,6 +86,6 @@ class Admin::ImportSourcesController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def import_source_params
-      params.require(:import_source).permit(:name, :url, :sport_id, :gender_id, :level_id)
+      params.require(:import_source).permit(:name, :url, :sport_id, :gender_id, :level_id, :frequency_hours)
     end
 end

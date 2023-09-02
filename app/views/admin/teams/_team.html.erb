@@ -1,10 +1,40 @@
-<li id="<%= dom_id team %>" class="flex items-center gap-x-6 py-5">
-  <a href="<%= admin_team_path team %>" class="flex-1">
-    <p class="text-lg font-semibold leading-6 text-gray-900"><%= team.name %></p>
-  </a>
+<li id="<%= dom_id team %>">
+  <a href="<%= admin_team_path team %>" class="block rounded p-4 shadow bg-white">
+    <% if team.photo_url.present? %>
+      <img
+        alt="<%= team.name %>"
+        src="<%= team.photo_url %>"
+        class="h-56 rounded-md object-cover aspect-2 mx-auto mb-4"
+      />
+    <% end %>
 
-  <div class="hidden shrink-0 sm:flex sm:flex-col sm:items-end">
-    <%= link_to 'Edit this team', edit_admin_team_path(team), class: "text-primary" %>
-  </div>
+    <h2 class="font-medium"><%= team.name %></h2>
+
+    <div class="mt-4 flex items-center gap-8 text-xs">
+      <div class="sm:inline-flex sm:shrink-0 sm:items-center sm:gap-2">
+        <div class="mt-1.5 sm:mt-0">
+          <p class="text-gray-500">Events</p>
+
+          <p class="font-medium"><%= pluralize team.events.length, 'Event' %></p>
+        </div>
+      </div>
+
+      <div class="sm:inline-flex sm:shrink-0 sm:items-center sm:gap-2">
+        <div class="mt-1.5 sm:mt-0">
+          <p class="text-gray-500">Roster</p>
+
+          <p class="font-medium"><%= pluralize team.players.length, 'Player' %></p>
+        </div>
+      </div>
+
+      <div class="sm:inline-flex sm:shrink-0 sm:items-center sm:gap-2">
+        <div class="mt-1.5 sm:mt-0">
+          <p class="text-gray-500">Season</p>
+
+          <p class="font-medium"><%= team.season %></p>
+        </div>
+      </div>
+    </div>
+  </a>
 </li>
 

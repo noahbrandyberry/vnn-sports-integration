@@ -4,19 +4,25 @@ class ImportSource < ApplicationRecord
   belongs_to :gender, optional: true
   belongs_to :level, optional: true
   has_many :events, dependent: :destroy
+  validates :url, presence: true
+  validates :frequency_hours, presence: true, numericality: { greater_than_or_equal_to: 6, less_than_or_equal_to: 168 }
+
 
   def fetch_calendar
-    client = Faraday.new(url: url) do |client|
-      client.request :url_encoded
-      client.adapter Faraday.default_adapter
-    end
-    response = client.get.body
+    if url.present?
+      client = Faraday.new(url: url) do |client|
+        client.request :url_encoded
+        client.adapter Faraday.default_adapter
+      end
+      response = client.get.body
 
-    calendar = Icalendar::Calendar.parse(response).first
-    
-    calendar_name = calendar.custom_properties['name'].try(:first)
-    self.name = calendar_name if calendar_name
-    calendar
+      calendar = Icalendar::Calendar.parse(response).first
+      
+      calendar_name = calendar.custom_properties['name'].try(:first)
+      self.name = calendar_name if calendar_name
+      return calendar
+    end
+    Icalendar::Calendar.new
   end
 
   def possible_teams
@@ -35,11 +41,12 @@ class ImportSource < ApplicationRecord
   end
 
   def sync
-    self.events.destroy_all
+    events.destroy_all
     teams = possible_teams
     fetch_calendar.events.each do |event| 
       add_event event, teams, true
     end
+    self.last_import_time = DateTime.now
     save
   end
 
@@ -47,80 +54,125 @@ class ImportSource < ApplicationRecord
     description = event.description || ''
     if level && sport && gender
       team = teams.first
-      self.events.build(
-        start: event.dtstart, 
-        name: event.summary,
-        location_name: event.location,
-        team_events: [
-          team.team_events.build(opponent_name: event.summary)
-        ]
-      )
+      if team
+        add_event_with_team event, team, sync
+      else
+        handle_missing_event event, sync
+      end
     else
-      event_length = self.events.length
+      event_length = events.length
 
-      teams.each do |team|
-        unless level
+      event_results = teams.map do |team|
+        cloned_event = event.clone
+
+        if sport
+          matching_sport = true
+        else
+          matching_sport = !!description.match(/\b#{team.sport}\b/)
+        end
+
+        if level
+          matching_level = true
+        else
           abbreviation = team.level.abbreviations.find{ |a| description.match(/\b#{a}\b/) }
           if abbreviation
-            start = event.dtstart.in_time_zone(school.timezone)
+            matching_level = true
+            cloned_event.dtstart = cloned_event.dtstart.in_time_zone(school.timezone)
             time = description.match(/\b#{abbreviation}\b - ([\d]{1,2}:[\d]{2})\b/).try(:[], 1)
             if time
               hours = time.split(":")[0].to_i
               minutes = time.split(":")[1].to_i
-              hours += 12 if start.strftime('%P') == 'pm'
-              start = start.change({hour: hours, min: minutes})
+              hours += 12 if cloned_event.dtstart.strftime('%P') == 'pm'
+              cloned_event.dtstart = cloned_event.dtstart.change({hour: hours, min: minutes})
             end
+          end
+        end
 
-            short = event.location.length < 5
+        if gender
+          matching_gender = true
+        else
+          matching_gender = !!description.match(/\b#{team.gender}\b/)
+        end
 
-            location_search = short && school.location ? "#{event.location} #{school.location.city}" : event.location
-            location_results = location_search.present? ? Geocoder.search(name: location_search) : []
-            location_result = location_results.first
+        if matching_sport && matching_level && matching_gender
+          add_event_with_team cloned_event, team, sync
+        end
+        {matching_sport: matching_sport, matching_level: matching_level, matching_gender: matching_gender}
+      end
 
-            timezone = Timezone['America/New_York']
+      if events.length == event_length && !sync
+        handle_missing_event event, sync, event_results
+      end
+    end
+  end
 
-            if location_result && location_result.place_id
-              location_place = Geocoder.search(location_result.place_id, lookup: :google_places_details).first
-              timezone = Timezone.lookup(location_place.latitude, location_place.longitude)
-              if location_place && location_place.street_address.present?
-                new_location_record = Location.new(
-                  name: location_place.data['name'],
-                  address_1: location_place.street_address,
-                  city: location_place.city,
-                  state: location_place.state,
-                  zip: location_place.postal_code,
-                  latitude: location_place.latitude,
-                  longitude: location_place.longitude,
-                  timezone: timezone.name
-                )
-                home = school.location.distance_to(new_location_record) < 2
-                (new_location_record.name = home ? school.location.name : event.summary) unless new_location_record.name
-              end
-            end
+  def add_event_with_team event, team, sync
+    if sync
+      short = event.location.length < 5
 
-            self.events.build(
-              start: start, 
-              name: event.summary,
-              location_name: event.location,
-              location: new_location_record,
-              team_events: [
-                team.team_events.build(opponent_name: event.summary, home: home)
-              ]
-            )
+      if short && school.location
+        location_results = event.location.present? ? Geocoder.search("#{event.location} #{school.location.city}", locationbias: "point:#{school.location.latitude},#{school.location.longitude}") : []
+      else
+        location_results = event.location.present? ? Geocoder.search(name: event.location) : []
+      end
+      location_result = location_results.first
+
+      timezone = Timezone['America/New_York']
+
+      if location_result && location_result.place_id
+        location_place = Geocoder.search(location_result.place_id, lookup: :google_places_details).first
+        timezone = Timezone.lookup(location_place.latitude, location_place.longitude)
+        if location_place && location_place.street_address.present?
+          new_location_record = Location.new(
+            name: location_place.data['name'],
+            address_1: location_place.street_address,
+            city: location_place.city,
+            state: location_place.state,
+            zip: location_place.postal_code,
+            latitude: location_place.latitude,
+            longitude: location_place.longitude,
+            timezone: timezone.name
+          )
+          home = school.location.distance_to(new_location_record) < 2
+          if !new_location_record.name
+            new_location_record.name = home ? school.location.name : event.summary
           end
         end
       end
+    end
 
-      if self.events.length == event_length && !sync
-        self.events.build(
-          start: event.dtstart, 
-          name: "Not Found: #{event.summary}",
-          location_name: event.location,
-          team_events: [
-            TeamEvent.new(public_notes: event.description)
-          ]
-        )
-      end
+    events.build(
+      start: event.dtstart, 
+      name: event.summary,
+      location_name: event.location,
+      location: new_location_record,
+      team_events: [
+        team.team_events.build(opponent_name: event.summary, home: home)
+      ]
+    )
+  end
+
+  def handle_missing_event event, sync, event_results = []
+    missing = []
+    if event_results.length > 0
+      missing << 'sport' if event_results.all? { |result| !result[:matching_sport] }
+      missing << 'level' if event_results.all? { |result| !result[:matching_level] }
+      missing << 'gender' if event_results.all? { |result| !result[:matching_gender] }
+      message =  "Unable to detect #{missing.to_sentence} from: \"#{event.description}\""
+    else
+      missing << "Sport: #{sport}" if sport
+      missing << "Level: #{level}" if level
+      missing << "Gender: #{gender}" if gender
+      message =  "You don't have a team setup with #{missing.to_sentence}"
+    end
+
+    if !sync
+      events.build(
+        start: event.dtstart, 
+        name: event.summary,
+        location_name: event.location,
+        result_type: message
+      )
     end
   end
 end

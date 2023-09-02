@@ -1,70 +1,68 @@
-<%= form_with(model: [:admin, import_source], url: import_source.events.length > 0 ? nil : admin_import_sources_preview_path, class: "contents", method: import_source.events.length > 0 ? nil : :post) do |form| %>
-  <% if import_source %>
-    <%= hidden_field_tag :id, import_source.id %>
-  <% end %>
-  
-  <% if import_source.errors.any? %>
-    <div id="error_explanation" class="bg-red-50 text-red-500 px-3 py-2 font-medium rounded-lg mt-3">
-      <h2><%= pluralize(import_source.errors.count, "error") %> prohibited this import_source from being saved:</h2>
+<div data-controller="forms">
+  <%= form_with(model: [:admin, import_source], url: import_source.events.length > 0 ? nil : admin_import_sources_preview_path, class: "contents", method: import_source.events.length > 0 ? nil : :post, data: {forms_target: "form"}) do |form| %>
+    <% if import_source %>
+      <%= hidden_field_tag :id, import_source.id %>
+    <% end %>
+    
+    <% if import_source.errors.any? %>
+      <div id="error_explanation" class="bg-red-50 text-red-500 px-3 py-2 font-medium rounded-lg mt-3">
+        <h2><%= pluralize(import_source.errors.count, "error") %> prohibited this import_source from being saved:</h2>
 
-      <ul>
-        <% import_source.errors.each do |error| %>
-          <li><%= error.full_message %></li>
-        <% end %>
-      </ul>
-    </div>
-  <% end %>
-
-  <div class="my-5">
-    <%= form.label :url %>
-    <%= form.text_field :url, class: "block shadow rounded-md border border-gray-200 outline-none px-3 py-2 mt-2 w-full", readonly: import_source.url %>
-  </div>
-
-  <% if import_source.url %>
-    <div class="my-5 flex gap-5 flex-col md:flex-row">
-      <div class="flex-1">
-        <%= form.label :sport_id %>
-        <%= form.collection_select :sport_id, Sport.order(:name), :id, :name, {include_blank: '-- Automatically Detect --'}, {class: "block shadow rounded-md border border-gray-200 outline-none px-3 py-2 mt-2 w-full"} %>
+        <ul>
+          <% import_source.errors.each do |error| %>
+            <li><%= error.full_message %></li>
+          <% end %>
+        </ul>
       </div>
-
-      <div class="flex-1">
-        <%= form.label :level_id %>
-        <%= form.collection_select :level_id, Level.all, :id, :name, {include_blank: '-- Automatically Detect --'}, {class: "block shadow rounded-md border border-gray-200 outline-none px-3 py-2 mt-2 w-full"} %>
-      </div>
-
-      <div class="flex-1">
-        <%= form.label :gender_id %>
-        <%= form.collection_select :gender_id, Gender.all, :id, :name, {include_blank: '-- Automatically Detect --'}, {class: "block shadow rounded-md border border-gray-200 outline-none px-3 py-2 mt-2 w-full"} %>
-      </div>
-    </div>
+    <% end %>
 
     <div class="my-5">
-      <%= form.label :name %>
-      <%= form.text_field :name, class: "block shadow rounded-md border border-gray-200 outline-none px-3 py-2 mt-2 w-full" %>
+      <%= form.label :url %>
+      <%= form.text_field :url, class: "block shadow rounded-md border border-gray-200 outline-none px-3 py-2 mt-2 w-full #{import_source.url.present? ? 'bg-gray-100' : ''}", readonly: import_source.url.present? %>
     </div>
 
-    <div class="rounded-md shadow px-4 bg-white mb-4">
-      <ul role="list" class="divide-y divide-gray-100">
-        <% import_source.events.each do |event| %>
-          <li class="flex justify-between gap-x-6 py-2 <%= event.team_events.first.try(:team) ? '' : 'line-through opacity-60' %>">
-            <div class="min-w-0 flex-auto">
-              <p class="text-sm font-semibold leading-6 text-gray-900"><%= event.name %></p>
-              <p class="truncate text-xs leading-5 text-gray-500"><%= event.start.in_time_zone(@current_school.timezone).strftime('%a, %b %e, %l:%M %p') %></p>
-            </div>
-            <div class="hidden shrink-0 sm:flex sm:flex-col sm:items-end">
-              <p class="text-sm leading-6 text-gray-900"><%= event.team_events.first.try(:team) || event.team_events.first.try(:public_notes) %></p>
-              <p class="text-xs leading-5 text-gray-500"><b><%= event.team_events.first.try(:home) ? 'Home' : 'Away' %></b> - <%= event.location || event.location_name %></p>
-            </div>
-          </li>
-        <% end %>
-      </ul>
-    </div>
-    <div class="inline">
-      <%= form.submit class: "rounded-lg py-3 px-5 bg-primary text-white inline-block font-medium cursor-pointer" %>
-    </div>
-  <% else %>
-    <div class="inline">
-      <%= form.submit "Preview", class: "rounded-lg py-3 px-5 bg-primary text-white inline-block font-medium cursor-pointer" %>
-    </div>
+    <% if import_source.url.present? %>
+      <div class="my-5 flex gap-5 flex-col md:flex-row">
+        <div class="flex-1">
+          <%= form.label :sport_id %>
+          <%= form.collection_select :sport_id, Sport.includes(:teams).where(teams: {id: @current_school.team_ids}).order(:name), :id, :name, {include_blank: '-- Automatically Detect --'}, {class: "block shadow rounded-md border border-gray-200 outline-none px-3 py-2 mt-2 w-full", data: { action: "change->forms#submit" }} %>
+        </div>
+
+        <div class="flex-1">
+          <%= form.label :level_id %>
+          <%= form.collection_select :level_id, Level.includes(:teams).where(teams: {id: @current_school.team_ids}), :id, :name, {include_blank: '-- Automatically Detect --'}, {class: "block shadow rounded-md border border-gray-200 outline-none px-3 py-2 mt-2 w-full", data: { action: "change->forms#submit" }} %>
+        </div>
+
+        <div class="flex-1">
+          <%= form.label :gender_id %>
+          <%= form.collection_select :gender_id, Gender.includes(:teams).where(teams: {id: @current_school.team_ids}), :id, :name, {include_blank: '-- Automatically Detect --'}, {class: "block shadow rounded-md border border-gray-200 outline-none px-3 py-2 mt-2 w-full", data: { action: "change->forms#submit" }} %>
+        </div>
+      </div>
+
+      <div class="my-5">
+        <%= form.label :name %>
+        <%= form.text_field :name, class: "block shadow rounded-md border border-gray-200 outline-none px-3 py-2 mt-2 w-full" %>
+      </div>
+
+      <div class="my-5">
+        <%= form.label :frequency_hours, "Import frequency (hours)" %>
+        <%= form.number_field :frequency_hours, class: "block shadow rounded-md border border-gray-200 outline-none px-3 py-2 mt-2 w-full" %>
+      </div>
+
+      <div class="rounded-md shadow bg-white mb-4">
+        <ul role="list" class="divide-y divide-gray-100">
+          <% import_source.events.each do |event| %>
+            <%= render "admin/events/event", event: event %>
+          <% end %>
+        </ul>
+      </div>
+      <div class="inline">
+        <%= form.submit "Import", class: "rounded-lg py-3 px-5 bg-primary text-white inline-block font-medium cursor-pointer" %>
+      </div>
+    <% else %>
+      <div class="inline">
+        <%= form.submit "Preview", class: "rounded-lg py-3 px-5 bg-primary text-white inline-block font-medium cursor-pointer" %>
+      </div>
+    <% end %>
   <% end %>
-<% end %>
+</div>

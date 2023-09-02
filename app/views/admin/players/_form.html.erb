@@ -1,0 +1,42 @@
+<div class="bg-white rounded shadow px-4 py-6 flex-col text-center items-center h-full aspect-1 max-w-full">
+  <%= form_with(model: [:admin, @team, player]) do |form| %>
+    <div class="flex justify-center relative mb-4">
+      <i class="fas fa-tshirt text-8xl text-primary"></i>
+      <div class="absolute w-full h-full text-center items-center justify-center flex">
+        <%= form.text_field :jersey, placeholder: '#', class: "shadow rounded-md border border-gray-200 outline-none px-2 py-1 w-12 text-center font-bold" %>
+      </div>
+    </div>
+
+    <div class="flex gap-4 py-px">
+      <%= form.text_field :first_name, placeholder: 'First Name', class: "flex-1 shadow rounded-md border border-gray-200 outline-none px-2 py-1 w-full text-right" %>
+      <%= form.text_field :last_name, placeholder: 'Last Name', class: "flex-1 shadow rounded-md border border-gray-200 outline-none px-2 py-1 w-full" %>
+    </div>
+
+    <div class="mt-4 flex items-center gap-2 text-xs">
+      <div class="text-left flex-1">
+        <p class="text-gray-500">Position</p>
+        <%= form.text_field :position, class: "text-xs font-medium shadow rounded-md border border-gray-200 outline-none px-1 py-1 w-full" %>
+      </div>
+
+      <div class="text-left flex-1">
+        <p class="text-gray-500">Grad year</p>
+        <%= form.text_field :grad_year, class: "text-xs font-medium shadow rounded-md border border-gray-200 outline-none px-1 py-1 w-full" %>
+      </div>
+
+      <div class="text-left flex-1">
+        <p class="text-gray-500">Height</p>
+        <%= form.text_field :height, class: "text-xs font-medium shadow rounded-md border border-gray-200 outline-none px-1 py-1 w-full" %>
+      </div>
+
+      <div class="text-left flex-1">
+        <p class="text-gray-500">Weight</p>
+        <%= form.text_field :weight, class: "text-xs font-medium shadow rounded-md border border-gray-200 outline-none px-1 py-1 w-full" %>
+      </div>
+    </div>
+
+    <div class="flex mt-4 gap-4">
+      <%= link_to "Cancel", admin_team_players_path(@team), class: "rounded-lg py-2 px-2 bg-gray-100 text-black font-medium cursor-pointer flex-1" %>
+      <%= form.submit "Save", class: "rounded-lg py-2 px-2 bg-primary text-white font-medium cursor-pointer flex-1" %>
+    </div>
+  <% end %>
+</div>

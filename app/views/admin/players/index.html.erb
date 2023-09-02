@@ -1,0 +1,8 @@
+<% content_for :title, "#{@team} Roster" %>
+
+<%= turbo_frame_tag "players", class: 'grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4' do %>
+  <%= render @players %>
+  <%= turbo_frame_tag Player.new do %>
+    <%= render 'admin/players/new_card' %>
+  <% end %>
+<% end %>

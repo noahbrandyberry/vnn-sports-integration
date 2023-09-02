@@ -3,7 +3,10 @@ Rails.application.routes.draw do
     post 'import_sources/preview', to: 'import_sources#preview'
     resources :import_sources
     resources :schools
-    resources :teams
+    resources :teams do
+      resources :players
+      resources :events
+    end
   end
   devise_for :admins
 

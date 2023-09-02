@@ -1,6 +1,10 @@
-<% nav_items = @current_school.persisted? ? [['Dashboard', admin_school_path(@current_school)], ['Teams', admin_teams_path], ['Imports', admin_import_sources_path], ['Events', '#']] : [] %>
+<% nav_items = @current_school.persisted? ? [['Dashboard', admin_school_path(@current_school)], ['Teams', admin_teams_path], ['Imports', admin_import_sources_path]] : [] %>
 <% profile_nav_items = [['Your Profile', edit_admin_registration_path], ['Sign out', destroy_admin_session_path, 'delete']] %>
 <% schools = current_admin ? current_admin.schools.where.not(id: @current_school) : [] %>
+<% if @team && @team.persisted? %>
+  <% nav_items << ['Events', admin_team_events_path(@team)] %>
+  <% nav_items << ['Roster', admin_team_players_path(@team)] %>
+<% end %>
 <!DOCTYPE html>
 <html>
   <head>
@@ -140,6 +144,9 @@
       </header>
       <main>
         <div class="mx-auto max-w-7xl py-6 px-4 sm:px-6 lg:px-8">
+          <% if notice.present? %>
+            <p class="py-3 px-4 bg-green-50 mb-5 text-green-700 font-medium rounded-lg block shadow" id="notice"><%= notice %></p>
+          <% end %>
           <%= yield %>
         </div>
       </main>

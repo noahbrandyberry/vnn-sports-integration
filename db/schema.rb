@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2023_09_01_083742) do
+ActiveRecord::Schema.define(version: 2023_09_02_013028) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -110,6 +110,8 @@ ActiveRecord::Schema.define(version: 2023_09_01_083742) do
     t.bigint "level_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.datetime "last_import_time", precision: 6
+    t.integer "frequency_hours", default: 24, null: false
     t.index ["gender_id"], name: "index_import_sources_on_gender_id"
     t.index ["level_id"], name: "index_import_sources_on_level_id"
     t.index ["school_id"], name: "index_import_sources_on_school_id"

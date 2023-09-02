@@ -31,7 +31,7 @@ class Location < ApplicationRecord
   end
 
   def to_s
-    "#{name} - #{address_1} #{address_2} #{city}, #{state} #{zip}"
+    "#{address_1} #{address_2} #{city}, #{state} #{zip}"
   end
 
   def store_metadata

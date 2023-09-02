@@ -1,0 +1,39 @@
+<%= turbo_frame_tag player do %>
+  <div class="bg-white rounded shadow px-4 py-6 flex-col text-center items-center h-full aspect-1 max-w-full">
+    <div class="flex justify-center relative mb-4">
+      <i class="fas fa-tshirt text-8xl text-primary"></i>
+      <span class="absolute w-full h-full text-center items-center justify-center flex text-white text-xl font-bold">
+        <%= player.jersey %>
+      </span>
+    </div>
+
+    <h3 class="text-lg font-bold py-1"><%= player %></h3>
+
+    <div class="mt-4 flex items-center gap-2 text-xs pb-[10px]">
+      <div class="text-left flex-1">
+        <p class="text-gray-500">Position</p>
+        <p class="font-medium"><%= player.position.present? ? player.position : 'N/A' %></p>
+      </div>
+
+      <div class="text-left flex-1">
+        <p class="text-gray-500">Grad year</p>
+        <p class="font-medium"><%= player.grad_year.present? ? player.grad_year : 'N/A' %></p>
+      </div>
+
+      <div class="text-left flex-1">
+        <p class="text-gray-500">Height</p>
+        <p class="font-medium"><%= player.height.present? ? player.height : 'N/A' %></p>
+      </div>
+
+      <div class="text-left flex-1">
+        <p class="text-gray-500">Weight</p>
+        <p class="font-medium"><%= player.weight.present? ? player.weight : 'N/A' %></p>
+      </div>
+    </div>
+
+    <div class="flex mt-4 gap-4">
+      <%= button_to 'Delete', admin_team_player_path(@team, player), method: :delete, class: "rounded-lg py-2 px-2 text-black font-medium cursor-pointer flex-1", form: { data: { turbo_confirm: "Are you sure you want to delete this player?" }, class: 'contents' } %>
+      <%= link_to "Edit", edit_admin_team_player_path(@team, player), class: "rounded-lg py-2 px-2 bg-primary text-white font-medium cursor-pointer flex-1" %>
+    </div>
+  </div>
+<% end %>

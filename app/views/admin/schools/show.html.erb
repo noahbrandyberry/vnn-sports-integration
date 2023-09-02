@@ -1,56 +1,48 @@
-<% content_for :title, "Dashboard" %>
+<% content_for :title, @school.name %>
 <% content_for :cta, (link_to 'Settings', edit_admin_school_path(@school), class: "rounded-lg py-3 px-5 bg-primary text-white block font-medium") %>
 
-<div class="mx-auto md:w-2/3 w-full">
-  <% if notice.present? %>
-    <p class="py-2 px-3 bg-green-50 mb-5 text-green-500 font-medium rounded-lg inline-block" id="notice"><%= notice %></p>
-  <% end %>
+<div class="grid grid-cols-1 gap-8 lg:grid-cols-3">
+  <div class="lg:col-span-2">
+    <ul role="list" class="grid grid-cols-1 gap-4 md:grid-cols-2">
+      <%= render @school.teams %>
+    </ul>
+  </div>
 
-  <div class="w-full divide-y divide-gray-100 rounded-md shadow p-4 bg-white">
-    <div class="px-4 sm:px-0 flex justify-between items-center">
-      <div>
-        <h3 class="text-base font-semibold leading-7 text-gray-900"><%= @school.name %></h3>
-        <p class="mt-1 max-w-2xl text-sm leading-6 text-gray-500"></p>
-      </div>
-      <img class="h-12 w-12" src="<%= @school.logo_url %>" alt="">
-    </div>
-    <div class="mt-6 border-t border-gray-100">
+  <div>
+    <div class="w-full divide-y divide-gray-100 rounded-md shadow px-4 bg-white">
       <dl class="divide-y divide-gray-100">
-        <div class="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
+        <div class="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-2 sm:px-0">
           <dt class="text-sm font-medium leading-6 text-gray-900">Mascot</dt>
           <dd class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0"><%= @school.mascot %></dd>
         </div>
-        <div class="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
-          <dt class="text-sm font-medium leading-6 text-gray-900">Athletic Director</dt>
+        <div class="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-2 sm:px-0">
+          <dt class="text-sm font-medium leading-6 text-gray-900">Athletic director</dt>
           <dd class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0"><%= @school.athletic_director %></dd>
         </div>
-        <div class="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
+        <div class="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-2 sm:px-0">
           <dt class="text-sm font-medium leading-6 text-gray-900">Email address</dt>
           <dd class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0"><%= @school.email %></dd>
         </div>
-        <div class="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
+        <div class="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-2 sm:px-0">
           <dt class="text-sm font-medium leading-6 text-gray-900">Phone</dt>
           <dd class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0"><%= @school.phone %></dd>
         </div>
-        <div class="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
+        <div class="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-2 sm:px-0">
           <dt class="text-sm font-medium leading-6 text-gray-900">Location</dt>
           <dd class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0"><%= @school.location %></dd>
         </div>
-        <div class="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
+        <div class="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-2 sm:px-0">
           <dt class="text-sm font-medium leading-6 text-gray-900">Socials</dt>
           <dd class="mt-2 text-sm text-gray-900 sm:col-span-2 sm:mt-0">
             <ul role="list" class="divide-y divide-gray-100 rounded-md border border-gray-200">
               <% @school.socials.each do |name, handle, url| %>
                 <li class="flex items-center justify-between py-4 pl-4 pr-5 text-sm leading-6">
-                  <div class="flex w-0 flex-1 items-center">
+                  <a class="flex w-0 flex-1 items-center" href="<%= url %>" target="_blank">
                     <i class="fab fa-<%= name %>" class="text-gray-400"></i>
                     <div class="ml-4 flex min-w-0 flex-1 gap-2">
                       <span class="truncate font-medium"><%= handle %></span>
                     </div>
-                  </div>
-                  <div class="ml-4 flex-shrink-0">
-                    <a href="<%= url %>" target="_blank" class="font-medium text-primary">View</a>
-                  </div>
+                  </a>
                 </li>
               <% end %>
             </ul>
