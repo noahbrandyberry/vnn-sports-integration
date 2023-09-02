@@ -22,12 +22,12 @@
 
       <div class="text-left flex-1">
         <p class="text-gray-500">Height</p>
-        <p class="font-medium"><%= player.height.present? ? player.height : 'N/A' %></p>
+        <p class="font-medium"><%= player.height.present? ? "#{player.height_humanized}" : 'N/A' %></p>
       </div>
 
       <div class="text-left flex-1">
         <p class="text-gray-500">Weight</p>
-        <p class="font-medium"><%= player.weight.present? ? player.weight : 'N/A' %></p>
+        <p class="font-medium"><%= player.weight.present? ? "#{player.weight} lbs" : 'N/A' %></p>
       </div>
     </div>
 

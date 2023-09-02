@@ -1,4 +1,4 @@
-<% content_for :title, "Import Details" %>
+<% content_for :title, "\"#{@import_source.name}\" Details" %>
 <% content_for :cta_secondary, (button_to 'Sync Now', admin_import_source_sync_path(@import_source), class: "rounded-lg py-3 px-5 block font-medium", method: :post) %>
 <% content_for :cta, (link_to 'Settings', edit_admin_import_source_path(@import_source), class: "rounded-lg py-3 px-5 bg-primary text-white block font-medium") %>
 

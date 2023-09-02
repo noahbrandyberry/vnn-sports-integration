@@ -1,44 +1,82 @@
 <% content_for :title, @team.name %>
 <% content_for :cta, (link_to 'Edit Team', edit_admin_team_path(@team), class: "rounded-lg py-3 px-5 bg-primary text-white block font-medium") %>
 
-<div class="grid grid-cols-1 lg:grid-cols-2 items-center mb-4">
-  <% if @team.photo_url.present? %>
-    <img
-      alt="<%= @team.name %>"
-      src="<%= @team.photo_url %>"
-      class="object-cover"
-    />
-  <% end %>
+<div class="flex flex-col gap-8">
+  <div class="grid grid-cols-1 lg:grid-cols-2 items-center mb-4">
+    <% if @team.photo_url.present? %>
+      <img
+        alt="<%= @team.name %>"
+        src="<%= @team.photo_url %>"
+        class="object-cover"
+      />
+    <% end %>
 
-  <div class="bg-white rounded shadow p-2">
-    <h2 class="text-2xl font-bold p-4">
-      Upcoming Events
-    </h2>
+    <div class="bg-white rounded shadow p-2">
+      <h2 class="text-2xl font-bold p-4">
+        Upcoming Events
+      </h2>
 
-    <ul role="list" class="divide-y divide-gray-100">
-      <% @team.events.where(start: Time.now..).limit(5).each do |event| %>
-        <%= render "admin/events/event", event: event %>
-      <% end %>
-    </ul>
-  
-    <div class="p-4">
-      <a
-        href="#"
-        class="rounded-lg py-3 px-5 bg-primary text-white font-medium inline-block"
-      >
-        View Full Schedule
-      </a>
+      <ul role="list" class="divide-y divide-gray-100">
+        <% @team.events.upcoming.limit(5).each do |event| %>
+          <%= render "admin/events/event", event: event %>
+        <% end %>
+      </ul>
+    
+      <div class="p-4">
+        <a
+          href="#events-section"
+          class="rounded-lg py-3 px-5 bg-primary text-white font-medium inline-block"
+        >
+          View Full Schedule
+        </a>
+      </div>
     </div>
   </div>
+
+  <section id="roster-section" class="flex flex-col gap-4">
+    <h2 class="text-2xl font-bold">
+      Roster
+    </h2>
+
+    <%= turbo_frame_tag "players", class: 'grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4' do %>
+      <%= render @team.players %>
+      <%= turbo_frame_tag Player.new do %>
+        <%= render 'admin/players/new_card' %>
+      <% end %>
+    <% end %>
+  </section>
+
+  <section id="events-section" class="flex flex-col gap-4">
+    <h2 class="text-2xl font-bold">
+      Events
+    </h2>
+
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-4 items-start">
+      <div class="rounded-md shadow bg-white mb-4">
+        <h3 class="text-lg px-4 py-2 font-bold border-b border-gray-100">Past</h3>
+
+        <% if @team.events.past.length > 0 %>
+          <ul role="list" class="divide-y divide-gray-100">
+            <% @team.events.past.each do |event| %>
+              <%= render "admin/events/event", event: event %>
+            <% end %>
+          </ul>
+        <% else %>
+          <p class="text-sm px-4 pb-4">No past events.</p>
+        <% end %>
+      </div>
+      <div class="rounded-md shadow bg-white mb-4">
+        <h3 class="text-lg px-4 py-2 font-bold border-b border-gray-100">Upcoming</h3>
+        <% if @team.events.upcoming.length > 0 %>
+          <ul role="list" class="divide-y divide-gray-100">
+            <% @team.events.upcoming.each do |event| %>
+              <%= render "admin/events/event", event: event %>
+            <% end %>
+          </ul>
+        <% else %>
+          <p class="text-sm px-4 pb-4">No upcoming events.</p>
+        <% end %>
+      </div>
+    </div>
+  </section>
 </div>
-
-<h2 class="text-2xl font-bold py-6">
-  Roster
-</h2>
-
-<%= turbo_frame_tag "players", class: 'grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4' do %>
-  <%= render @team.players %>
-  <%= turbo_frame_tag Player.new do %>
-    <%= render 'admin/players/new_card' %>
-  <% end %>
-<% end %>

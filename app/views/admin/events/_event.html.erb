@@ -2,13 +2,13 @@
 <% text_style = team_event.try(:team) ? '' : 'line-through text-gray-500' %>
 
 <li class="flex justify-between gap-x-6 py-2 px-4 <%= team_event.try(:team) ? '' : 'bg-gray-100' %>">
-  <div class="min-w-0 flex-auto">
+  <div class="min-w-0 shrink-0">
     <p class="text-sm font-semibold leading-6 <%= text_style %>"><%= event.name %></p>
-    <p class="truncate text-xs leading-5 text-gray-500 <%= text_style %>"><%= event.start.in_time_zone(@current_school.timezone).strftime('%a, %b %e, %l:%M %p') %></p>
+    <p class="text-xs leading-5 text-gray-500 <%= text_style %>"><%= event.start.in_time_zone(@current_school.timezone).strftime('%a, %b %e, %l:%M %p') %></p>
   </div>
-  <div class="hidden shrink-0 sm:flex sm:flex-col sm:items-end">
+  <div class="min-w-0 hidden flex-auto sm:flex sm:flex-col sm:items-end">
     <p class="text-sm leading-6 text-gray-900"><%= team_event.try(:team) || event.result_type %></p>
-    <p class="text-xs leading-5 text-gray-500 <%= text_style %>">
+    <p class="text-xs leading-5 text-gray-500 truncate max-w-full <%= text_style %>">
       <% if team_event && event.location %>
         <b><%= team_event.try(:home) ? 'Home' : 'Away' %></b> - 
       <% end %>

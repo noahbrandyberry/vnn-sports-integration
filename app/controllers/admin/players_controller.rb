@@ -2,12 +2,16 @@ class Admin::PlayersController < ApplicationController
   before_action :authenticate_admin!
   before_action :require_current_school
   before_action :set_team
-  before_action :set_player, only: %i[ edit update destroy ]
+  before_action :set_player, only: %i[ show edit update destroy ]
   layout 'admin'
 
   # GET /players
   def index
     @players = @team.players
+  end
+
+  # GET /players/1
+  def show
   end
 
   # GET /players/new

@@ -7,6 +7,9 @@ class Event < ApplicationRecord
   has_one :result
   belongs_to :import_source, optional: true
 
+  scope :upcoming, -> { where(start: Time.now..) }
+  scope :past, -> { where(start: ..Time.now) }
+
   def result_status team
     is_home_team = host_team === team
     if result
