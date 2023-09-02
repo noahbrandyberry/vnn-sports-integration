@@ -1,32 +1,26 @@
-<div id="<%= dom_id import_source %>">
-  <p class="my-5">
-    <strong class="block font-medium mb-1">Name:</strong>
-    <%= import_source.name %>
-  </p>
+<<%= action_name == "show" ? 'div' : 'a' %> id="<%= dom_id import_source %>" class="bg-white rounded shadow p-6 flex flex-col gap-4" href="<%= url_for [:admin, import_source] %>">
+  <h2 class="text-lg font-bold"><%= import_source.name %></h2>
 
-  <p class="my-5">
-    <strong class="block font-medium mb-1">Url:</strong>
-    <%= import_source.url %>
-  </p>
+  <p>Imports events <b>every <%= pluralize(import_source.frequency_hours, 'Hour') %></b> from <b><%= URI(import_source.url).host %></b></p>
 
-  <p class="my-5">
-    <strong class="block font-medium mb-1">Sport:</strong>
-    <%= import_source.sport_id %>
-  </p>
+  <div class="flex items-center gap-2 text-xs">
+    <div class="text-left flex-1">
+      <p class="text-gray-500">Sport</p>
+      <p class="font-medium"><%= import_source.sport ? import_source.sport : 'Auto' %></p>
+    </div>
 
-  <p class="my-5">
-    <strong class="block font-medium mb-1">Gender:</strong>
-    <%= import_source.gender_id %>
-  </p>
+    <div class="text-left flex-1">
+      <p class="text-gray-500">Level</p>
+      <p class="font-medium"><%= import_source.level ? import_source.level : 'Auto' %></p>
+    </div>
 
-  <p class="my-5">
-    <strong class="block font-medium mb-1">Level:</strong>
-    <%= import_source.level_id %>
-  </p>
+    <div class="text-left flex-1">
+      <p class="text-gray-500">Gender</p>
+      <p class="font-medium"><%= import_source.gender ? import_source.gender : 'Auto' %></p>
+    </div>
+  </div>
 
-  <% if action_name != "show" %>
-    <%= link_to "Show this import source", [:admin, import_source], class: "rounded-lg py-3 px-5 bg-gray-100 inline-block font-medium" %>
-    <%= link_to 'Edit this import source', edit_admin_import_source_path(import_source), class: "rounded-lg py-3 ml-2 px-5 bg-gray-100 inline-block font-medium" %>
-    <hr class="mt-6">
-  <% end %>
-</div>
+  <p class="text-xs text-gray-500">
+    <%= import_source.last_import_time ? "Last Imported on #{import_source.last_import_time.in_time_zone(@current_school.timezone).strftime('%D at %l:%M %p %Z')}" : 'Import Running Now' %>
+  </p>
+</<%= action_name == "show" ? 'div' : 'a' %>>

@@ -1,12 +1,28 @@
-<div class="mx-auto md:w-2/3 w-full flex">
-  <div class="mx-auto">
-    <%= render @import_source %>
+<% content_for :title, "Import Details" %>
+<% content_for :cta_secondary, (button_to 'Sync Now', admin_import_source_sync_path(@import_source), class: "rounded-lg py-3 px-5 block font-medium", method: :post) %>
+<% content_for :cta, (link_to 'Settings', edit_admin_import_source_path(@import_source), class: "rounded-lg py-3 px-5 bg-primary text-white block font-medium") %>
 
-    <%= link_to 'Edit this import_source', edit_admin_import_source_path(@import_source), class: "mt-2 rounded-lg py-3 px-5 bg-gray-100 inline-block font-medium" %>
-    <div class="inline-block ml-2">
-      <%= button_to 'Destroy this import_source', admin_import_source_path(@import_source), method: :delete, class: "mt-2 rounded-lg py-3 px-5 bg-gray-100 font-medium" %>
+<div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
+  <div>
+    <%= render @import_source %>
+  </div>
+  
+  <div>
+    <div class="bg-white rounded shadow p-2">
+      <h2 class="text-lg font-bold p-4">
+        Events
+      </h2>
+
+      <% if @import_source.events.length > 0 %>
+        <ul role="list" class="divide-y divide-gray-100">
+          <% @import_source.events.each do |event| %>
+            <%= render "admin/events/event", event: event %>
+          <% end %>
+        </ul>
+      <% else %>
+        <p class="text-sm px-4 pb-4">No imported events.</p>
+      <% end %>
     </div>
-    <%= link_to 'Back to import_sources', admin_import_sources_path, class: "ml-2 rounded-lg py-3 px-5 bg-gray-100 inline-block font-medium" %>
   </div>
 </div>
 

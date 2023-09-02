@@ -1,9 +1,8 @@
-<% content_for :title, "Imports" %>
+<% content_for :title, "Import Sources" %>
 <% content_for :cta, (link_to 'New import', new_admin_import_source_path, class: "rounded-lg py-3 px-5 bg-primary text-white block font-medium") %>
 
-
 <div class="w-full">
-  <div id="import_sources" class="min-w-full">
+  <div id="import_sources" class="grid grid-cols-1 lg:grid-cols-2 gap-4">
     <%= render @import_sources %>
   </div>
 </div>

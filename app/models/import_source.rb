@@ -68,7 +68,7 @@ class ImportSource < ApplicationRecord
         if sport
           matching_sport = true
         else
-          matching_sport = !!description.match(/\b#{team.sport}\b/)
+          matching_sport = !!description.match(/\b#{team.sport}\b/) || !!self.name.match(/\b#{team.sport}\b/)
         end
 
         if level
@@ -85,13 +85,15 @@ class ImportSource < ApplicationRecord
               hours += 12 if cloned_event.dtstart.strftime('%P') == 'pm'
               cloned_event.dtstart = cloned_event.dtstart.change({hour: hours, min: minutes})
             end
+          else
+            matching_level = !!self.name.match(/\b#{team.level}\b/)
           end
         end
 
         if gender
           matching_gender = true
         else
-          matching_gender = !!description.match(/\b#{team.gender}\b/)
+          matching_gender = !!description.match(/\b#{team.gender}\b/) || !!self.name.match(/\b#{team.gender}\b/)
         end
 
         if matching_sport && matching_level && matching_gender
@@ -121,8 +123,8 @@ class ImportSource < ApplicationRecord
 
       if location_result && location_result.place_id
         location_place = Geocoder.search(location_result.place_id, lookup: :google_places_details).first
-        timezone = Timezone.lookup(location_place.latitude, location_place.longitude)
         if location_place && location_place.street_address.present?
+          timezone = Timezone.lookup(location_place.latitude, location_place.longitude)
           new_location_record = Location.new(
             name: location_place.data['name'],
             address_1: location_place.street_address,

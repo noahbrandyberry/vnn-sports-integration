@@ -1,6 +1,7 @@
 Rails.application.routes.draw do
   namespace :admin do
     post 'import_sources/preview', to: 'import_sources#preview'
+    post 'import_sources/:id/sync', to: 'import_sources#sync', as: 'import_source_sync'
     resources :import_sources
     resources :schools
     resources :teams do

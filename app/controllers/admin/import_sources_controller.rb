@@ -1,15 +1,15 @@
 class Admin::ImportSourcesController < ApplicationController
   before_action :authenticate_admin!
   before_action :require_current_school
-  before_action :set_import_source, only: %i[ show edit update destroy ]
+  before_action :set_import_source, only: %i[ show edit update destroy sync ]
   layout 'admin'
 
-  # GET /import_sources or /import_sources.json
+  # GET /import_sources
   def index
     @import_sources = @current_school.import_sources
   end
 
-  # GET /import_sources/1 or /import_sources/1.json
+  # GET /import_sources/1
   def show
   end
 
@@ -20,9 +20,10 @@ class Admin::ImportSourcesController < ApplicationController
 
   # GET /import_sources/1/edit
   def edit
+    @import_source.preview
   end
 
-  # POST /import_sources or /import_sources.json
+  # POST /import_sources
   def create
     @import_source = @current_school.import_sources.new(import_source_params)
 
@@ -30,35 +31,39 @@ class Admin::ImportSourcesController < ApplicationController
       if @import_source.save
         ImportSourceJob.perform_later @import_source
         format.html { redirect_to admin_import_source_url(@import_source), notice: "Import source was successfully created." }
-        format.json { render :show, status: :created, location: @import_source }
       else
         format.html { render :new, status: :unprocessable_entity }
-        format.json { render json: @import_source.errors, status: :unprocessable_entity }
       end
     end
   end
 
-  # PATCH/PUT /import_sources/1 or /import_sources/1.json
+  # PATCH/PUT /import_sources/1
   def update
     respond_to do |format|
       if @import_source.update(import_source_params)
         ImportSourceJob.perform_later @import_source
         format.html { redirect_to admin_import_source_url(@import_source), notice: "Import source was successfully updated." }
-        format.json { render :show, status: :ok, location: @import_source }
       else
         format.html { render :edit, status: :unprocessable_entity }
-        format.json { render json: @import_source.errors, status: :unprocessable_entity }
       end
     end
   end
 
-  # DELETE /import_sources/1 or /import_sources/1.json
+  # DELETE /import_sources/1
   def destroy
     @import_source.destroy
 
     respond_to do |format|
       format.html { redirect_to admin_import_sources_url, notice: "Import source was successfully destroyed." }
-      format.json { head :no_content }
+    end
+  end
+
+  # POST /import_sources/1/sync
+  def sync
+    ImportSourceJob.perform_later @import_source
+
+    respond_to do |format|
+      format.html { redirect_to admin_import_source_url(@import_source), notice: "Sync started." }
     end
   end
 

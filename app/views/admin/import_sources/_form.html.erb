@@ -1,4 +1,4 @@
-<div data-controller="forms">
+<div data-controller="forms" class="contents">
   <%= form_with(model: [:admin, import_source], url: import_source.events.length > 0 ? nil : admin_import_sources_preview_path, class: "contents", method: import_source.events.length > 0 ? nil : :post, data: {forms_target: "form"}) do |form| %>
     <% if import_source %>
       <%= hidden_field_tag :id, import_source.id %>
@@ -49,13 +49,18 @@
         <%= form.number_field :frequency_hours, class: "block shadow rounded-md border border-gray-200 outline-none px-3 py-2 mt-2 w-full" %>
       </div>
 
-      <div class="rounded-md shadow bg-white mb-4">
-        <ul role="list" class="divide-y divide-gray-100">
-          <% import_source.events.each do |event| %>
-            <%= render "admin/events/event", event: event %>
-          <% end %>
-        </ul>
-      </div>
+      <% events = import_source.events.select{ |event| !event.persisted? } %>
+      <% if events.length > 0 %>
+        <div class="rounded-md shadow bg-white mb-4">
+          <h2 class="text-lg px-4 py-2 font-bold border-b border-gray-100">Events Preview</h2>
+          <ul role="list" class="divide-y divide-gray-100">
+            <% events.each do |event| %>
+              <%= render "admin/events/event", event: event %>
+            <% end %>
+          </ul>
+        </div>
+      <% end %>
+
       <div class="inline">
         <%= form.submit "Import", class: "rounded-lg py-3 px-5 bg-primary text-white inline-block font-medium cursor-pointer" %>
       </div>
