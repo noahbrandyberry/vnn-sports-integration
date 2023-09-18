@@ -22,7 +22,11 @@ module Snap
 
         if location_result && location_result.place_id
           location_place = Geocoder.search(location_result.place_id, lookup: :google_places_details).first
-          timezone = Timezone.lookup(location_place.latitude, location_place.longitude)
+          begin
+            timezone = Timezone.lookup(location_place.latitude, location_place.longitude)
+          rescue StandardError => e
+            timezone = Timezone['America/New_York']
+          end
           if location_place && location_place.street_address.present?
             new_location_record = Location.new(
               id: "snap-#{school_id}-#{team_id}-#{event_id}",

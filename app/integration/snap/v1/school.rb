@@ -27,7 +27,12 @@ module Snap
 
         location.geocode
 
-        location.timezone = Timezone.lookup(location.latitude, location.longitude).name
+        begin
+          location.timezone = Timezone.lookup(location.latitude, location.longitude).name
+        rescue StandardError => e
+          location.timezone = Timezone['America/New_York'].name
+        end
+
 
         record_class.new(
           id: record_id,
