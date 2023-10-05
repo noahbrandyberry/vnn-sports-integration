@@ -18,9 +18,8 @@ Geocoder.configure(
   # units: :mi,                 # :km for kilometers or :mi for miles
   # distances: :linear          # :spherical or :linear
   # Cache configuration
-  cache: Geocoder::CacheStore::Generic.new(Rails.cache, {}),
-  cache_options: {
+  cache: Geocoder::CacheStore::Generic.new(Rails.cache, {
     expiration: 1.year,
     prefix: 'geocoder:'
-  }
+  }),
 )
