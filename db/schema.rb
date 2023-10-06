@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2023_09_02_013028) do
+ActiveRecord::Schema.define(version: 2023_10_05_234243) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -48,6 +48,13 @@ ActiveRecord::Schema.define(version: 2023_09_02_013028) do
     t.bigint "admin_id"
     t.index ["admin_id"], name: "index_admins_schools_on_admin_id"
     t.index ["school_id"], name: "index_admins_schools_on_school_id"
+  end
+
+  create_table "cached_urls", force: :cascade do |t|
+    t.string "url"
+    t.json "response"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
   end
 
   create_table "device_subscriptions", force: :cascade do |t|

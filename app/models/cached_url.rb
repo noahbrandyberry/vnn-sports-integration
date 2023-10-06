@@ -1,0 +1,2 @@
+class CachedUrl < ApplicationRecord
+end
