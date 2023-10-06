@@ -1,11 +1,15 @@
 class CacheService
   class << self
+    def find_record key
+      CachedUrl.find_by(url: key)
+    end
+
     def [](key)
-      CachedUrl.find_by(url: key).response
+      find_record(key).try(:response)
     end
     
     def []=(key, value)
-      existing_record = self[key]
+      existing_record = find_record(key)
       if existing_record
         existing_record.update(response: value)
       else
@@ -14,10 +18,7 @@ class CacheService
     end
     
     def delete(key)
-      existing_record = self[key]
-      if existing_record
-        existing_record.destroy
-      end
+      find_record(key).try(:destroy)
     end
     
     def keys
