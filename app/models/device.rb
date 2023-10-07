@@ -5,6 +5,7 @@ class Device < ApplicationRecord
   def self.send_push_notifications
     all.includes(device_subscriptions: [:subscribable]).each do |device|
       device.teams.each do |team|
+        next unless team
         offset_time = Time.now.since(30.minutes)
         events = team.events.where(start: offset_time.ago(10.minutes)..offset_time)
 
