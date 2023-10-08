@@ -11,6 +11,7 @@ class Admin::ImportSourcesController < ApplicationController
 
   # GET /import_sources/1
   def show
+    @events = @import_source.events.includes(:location)
   end
 
   # GET /import_sources/new

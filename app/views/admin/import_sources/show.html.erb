@@ -13,9 +13,9 @@
         Events
       </h2>
 
-      <% if @import_source.events.length > 0 %>
+      <% if @events.length > 0 %>
         <ul role="list" class="divide-y divide-gray-100">
-          <% @import_source.events.each do |event| %>
+          <% @events.each do |event| %>
             <%= render "admin/events/event", event: event %>
           <% end %>
         </ul>

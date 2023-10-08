@@ -7,7 +7,7 @@ class Api::V1::TeamsController < ApplicationController
   # GET /teams
   # GET /teams.json
   def index
-    @teams = @school.teams.where(year: Year.last).where.not(gender_id: nil).includes(program: [:gender, :sport]).includes(events: [:result]).includes(:year, :season, :level, :gender, :sport, :images, :players)
+    @teams = @school.teams.where(year: Year.last).where.not(gender_id: nil).includes(program: [:gender, :sport]).includes(events: [:result, :team_events]).includes(:year, :season, :level, :gender, :sport, :images, :players)
   end
 
   # GET /teams/1
