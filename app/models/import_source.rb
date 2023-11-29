@@ -149,7 +149,7 @@ class ImportSource < ApplicationRecord
       start: event.dtstart, 
       name: event.summary,
       location_name: event.location,
-      location: new_location_record if event.location else school.location,
+      location: event.location ? new_location_record : school.location,
       team_events: [
         team.team_events.build(opponent_name: event.summary, home: home)
       ]
