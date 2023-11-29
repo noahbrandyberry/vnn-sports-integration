@@ -110,34 +110,36 @@ class ImportSource < ApplicationRecord
 
   def add_event_with_team event, team, sync
     if sync
-      short = event.location.length < 5
+      if event.location
+        short = event.location.length < 5
 
-      if short && school.location
-        location_results = event.location.present? ? Geocoder.search("#{event.location} #{school.location.city}", locationbias: "point:#{school.location.latitude},#{school.location.longitude}") : []
-      else
-        location_results = event.location.present? ? Geocoder.search(name: event.location) : []
-      end
-      location_result = location_results.first
+        if short && school.location
+          location_results = event.location.present? ? Geocoder.search("#{event.location} #{school.location.city}", locationbias: "point:#{school.location.latitude},#{school.location.longitude}") : []
+        else
+          location_results = event.location.present? ? Geocoder.search(name: event.location) : []
+        end
+        location_result = location_results.first
 
-      timezone = Timezone['America/New_York']
+        timezone = Timezone['America/New_York']
 
-      if location_result && location_result.place_id
-        location_place = Geocoder.search(location_result.place_id, lookup: :google_places_details).first
-        if location_place && location_place.street_address.present?
-          timezone = Timezone.lookup(location_place.latitude, location_place.longitude)
-          new_location_record = Location.new(
-            name: location_place.data['name'],
-            address_1: location_place.street_address,
-            city: location_place.city,
-            state: location_place.state,
-            zip: location_place.postal_code,
-            latitude: location_place.latitude,
-            longitude: location_place.longitude,
-            timezone: timezone.name
-          )
-          home = school.location.distance_to(new_location_record) < 2
-          if !new_location_record.name
-            new_location_record.name = home ? school.location.name : event.summary
+        if location_result && location_result.place_id
+          location_place = Geocoder.search(location_result.place_id, lookup: :google_places_details).first
+          if location_place && location_place.street_address.present?
+            timezone = Timezone.lookup(location_place.latitude, location_place.longitude)
+            new_location_record = Location.new(
+              name: location_place.data['name'],
+              address_1: location_place.street_address,
+              city: location_place.city,
+              state: location_place.state,
+              zip: location_place.postal_code,
+              latitude: location_place.latitude,
+              longitude: location_place.longitude,
+              timezone: timezone.name
+            )
+            home = school.location.distance_to(new_location_record) < 2
+            if !new_location_record.name
+              new_location_record.name = home ? school.location.name : event.summary
+            end
           end
         end
       end
@@ -147,7 +149,7 @@ class ImportSource < ApplicationRecord
       start: event.dtstart, 
       name: event.summary,
       location_name: event.location,
-      location: new_location_record,
+      location: new_location_record if event.location else school.location,
       team_events: [
         team.team_events.build(opponent_name: event.summary, home: home)
       ]
