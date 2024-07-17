@@ -487,7 +487,7 @@ module Snap
                            )
                          end
                        else
-                         unless location.present?
+                         unless event.location.present?
                            new_location_record = Location.new(
                              id: "snap2-#{s.school_id}-#{season.season_id}-#{event.event_id}",
                              name: school_location.name,
