@@ -37,7 +37,7 @@ task import_snap_schools: :environment do
   begin
     ENV["SNAP_SCHOOL_IDS"].split(', ').each do |school_id|
       puts "importing #{school_id}"
-      Snap::V1::School.find(school_id).import
+      Snap::V2::Client.import(school_id)
     end
     puts "schools updated!"
     cron.complete

@@ -1,9 +1,10 @@
 module Snap
   module V1
     class School < Base
-      @endpoint = 'schools'
+      @endpoint = "schools"
 
-      attr_accessor :school_id, :subdomain, :name, :address, :city, :state, :zip, :phone, :fax, :latitude, :longitude, :mascot, :motto, :url, :color1, :color2, :facebook_url, :twitter_url, :color_icon, :color_primary_text, :color_secondary_text, :color_slide_menu, :color_slide_menu_text, :color_theme, :ad_school, :enrollment, :pricing_tier, :kind, :vnn, :record
+      attr_accessor :school_id, :subdomain, :name, :address, :city, :state, :zip, :phone, :fax, :latitude, :longitude,
+                    :mascot, :motto, :url, :color1, :color2, :facebook_url, :twitter_url, :color_icon, :color_primary_text, :color_secondary_text, :color_slide_menu, :color_slide_menu_text, :color_theme, :ad_school, :enrollment, :pricing_tier, :kind, :vnn, :record
 
       def record_id
         "snap-#{school_id}"
@@ -22,7 +23,7 @@ module Snap
           state: state,
           zip: zip,
           latitude: latitude,
-          longitude: longitude,
+          longitude: longitude
         )
 
         location.geocode
@@ -30,9 +31,8 @@ module Snap
         begin
           location.timezone = Timezone.lookup(location.latitude, location.longitude).name
         rescue StandardError => e
-          location.timezone = Timezone['America/New_York'].name
+          location.timezone = Timezone["America/New_York"].name
         end
-
 
         record_class.new(
           id: record_id,
@@ -81,7 +81,7 @@ module Snap
       def import
         super
 
-        Snap::V1::Team.import_all(school_id: school_id, year: '2023-2024', include_roster: true)
+        Snap::V1::Team.import_all(school_id: school_id, year: "2023-2024", include_roster: true)
       end
     end
   end

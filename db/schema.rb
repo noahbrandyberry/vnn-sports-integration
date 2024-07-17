@@ -156,16 +156,6 @@ ActiveRecord::Schema.define(version: 2023_10_05_234243) do
     t.datetime "updated_at", precision: 6, null: false
   end
 
-  create_table "media", force: :cascade do |t|
-    t.string "url"
-    t.string "description"
-    t.integer "kind"
-    t.string "team_id", null: false
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
-    t.index ["team_id"], name: "index_media_on_team_id"
-  end
-
   create_table "players", force: :cascade do |t|
     t.string "first_name"
     t.string "last_name"
@@ -428,7 +418,6 @@ ActiveRecord::Schema.define(version: 2023_10_05_234243) do
   add_foreign_key "import_sources", "levels"
   add_foreign_key "import_sources", "schools"
   add_foreign_key "import_sources", "sports"
-  add_foreign_key "media", "teams"
   add_foreign_key "players", "teams"
   add_foreign_key "pressbox_posts", "events"
   add_foreign_key "pressbox_posts", "teams"
