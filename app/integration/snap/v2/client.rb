@@ -535,8 +535,8 @@ module Snap
                           location_name: event.location,
                           team_events: [],
                           result: if has_result
-                                    Result.new(home: home ? result.score : result.opponenet_score,
-                                               away: home ? result.opponenet_score : result.score)
+                                    Result.new(home: home ? result.score : result.opponent_score,
+                                               away: home ? result.opponent_score : result.score)
                                   end,
                           team_results: if has_team_result
                                           [
