@@ -1,7 +1,7 @@
 source "https://rubygems.org"
 git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 
-ruby "3.0.0"
+ruby "3.3.4"
 
 # Bundle edge Rails instead: gem "rails", github: "rails/rails", branch: "main"
 gem "rails", "~> 7.0.1"
@@ -19,7 +19,7 @@ gem "puma", "~> 5.0"
 gem "jsbundling-rails"
 
 # Hotwire's SPA-like page accelerator [https://turbo.hotwired.dev]
-gem 'turbo-rails', '~> 1.4'
+gem "turbo-rails", "~> 1.4"
 
 # Hotwire's modest JavaScript framework [https://stimulus.hotwired.dev]
 gem "stimulus-rails"
@@ -40,7 +40,7 @@ gem "jbuilder"
 # gem "bcrypt", "~> 3.1.7"
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
-gem "tzinfo-data", platforms: %i[ mingw mswin x64_mingw jruby ]
+gem "tzinfo-data", platforms: %i[mingw mswin x64_mingw jruby]
 
 # Reduces boot times through caching; required in config/boot.rb
 gem "bootsnap", require: false
@@ -51,29 +51,29 @@ gem "bootsnap", require: false
 # Use Active Storage variants [https://guides.rubyonrails.org/active_storage_overview.html#transforming-images]
 # gem "image_processing", "~> 1.2"
 
-gem 'faraday', '~> 2.1'
+gem "faraday", "~> 2.1"
 
-gem 'rpush'
+gem "rpush"
 
-gem 'icalendar', '~> 2.7', '>= 2.7.1'
+gem "icalendar", "~> 2.7", ">= 2.7.1"
 
-gem 'geocoder', '~> 1.7', '>= 1.7.3'
+gem "geocoder", "~> 1.7", ">= 1.7.3"
 
-gem 'sentry-ruby'
+gem "sentry-ruby"
 
-gem 'sentry-rails'
+gem "sentry-rails"
 
-gem 'timezone', '~> 1.0'
+gem "timezone", "~> 1.0"
 
 gem "devise", "~> 4.9"
 
-gem 'tailwindcss-rails'
+gem "tailwindcss-rails"
 
-gem 'graphql-client', '~> 0.23.0'
+gem "graphql-client", "~> 0.23.0"
 
 group :development, :test do
   # See https://guides.rubyonrails.org/debugging_rails_applications.html#debugging-with-the-debug-gem
-  gem "debug", platforms: %i[ mri mingw x64_mingw ]
+  gem "debug", platforms: %i[mri mingw x64_mingw]
 end
 
 group :development do
