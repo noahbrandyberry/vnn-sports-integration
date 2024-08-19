@@ -3,8 +3,10 @@ class ImportSource < ApplicationRecord
   belongs_to :sport, optional: true
   belongs_to :gender, optional: true
   belongs_to :level, optional: true
+  belongs_to :year
   has_many :events, dependent: :destroy
   validates :url, presence: true
+  validates :year_id, presence: true
   validates :frequency_hours, presence: true, numericality: { greater_than_or_equal_to: 6, less_than_or_equal_to: 168 }
 
   def fetch_calendar
@@ -26,7 +28,7 @@ class ImportSource < ApplicationRecord
   end
 
   def possible_teams
-    teams = school.teams.includes(:level, :sport, :gender).where(year: Year.last)
+    teams = school.teams.includes(:level, :sport, :gender).where(year: year_id)
     teams = teams.where(sport: sport) if sport
     teams = teams.where(gender: gender) if gender
     teams = teams.where(level: level) if level

@@ -5,7 +5,7 @@ class Admin::EventsController < ApplicationController
 
   # GET /events or /events.json
   def index
-    @events = Event.all
+    @events = @team.events
   end
 
   # GET /events/1 or /events/1.json
@@ -14,7 +14,7 @@ class Admin::EventsController < ApplicationController
 
   # GET /events/new
   def new
-    @event = Event.new
+    @player = @team.events.build
   end
 
   # GET /events/1/edit
@@ -23,7 +23,7 @@ class Admin::EventsController < ApplicationController
 
   # POST /events or /events.json
   def create
-    @event = Event.new(event_params)
+    @event = @team.events.build(event_params)
 
     respond_to do |format|
       if @event.save

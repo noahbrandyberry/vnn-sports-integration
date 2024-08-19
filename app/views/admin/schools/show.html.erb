@@ -4,7 +4,7 @@
 <div class="grid grid-cols-1 gap-8 lg:grid-cols-3">
   <div class="lg:col-span-2">
     <ul role="list" class="grid grid-cols-1 gap-4 md:grid-cols-2">
-      <%= render @school.teams %>
+      <%= render @school.teams.where(year: selected_year_id) %>
     </ul>
   </div>
 

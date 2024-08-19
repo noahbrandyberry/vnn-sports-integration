@@ -60,7 +60,11 @@
             <div class="hidden md:block flex-1">
               <div class="ml-4 flex items-center md:ml-6 justify-end">
                 <% if admin_signed_in? %>
-                  <%= collection_select :year, :year_id, Year.order(:name).reverse, :id, :name, {}, {class: "block shadow rounded-md border border-gray-200 outline-none px-3 py-2 w-36"} %>
+                  <% if @current_school.persisted? %>
+                    <%= form_with url: admin_set_current_year_path(@current_school.id), method: :patch do |form| %>
+                      <%= collection_select nil, :year_id, Year.order(:name).reverse, :id, :name, {selected: selected_year_id}, {class: "block shadow rounded-md border border-gray-200 outline-none px-3 py-2 w-36", id: 'current_year_select'} %>
+                    <% end %>
+                  <% end %>
 
                   <div class="relative ml-3" data-controller="toggle">
                     <button type="button" class="relative flex max-w-xs items-center rounded-full bg-gray-800 text-sm focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800" id="user-menu-button" aria-expanded="false" aria-haspopup="true" data-action="click->toggle#toggle touch->toggle#toggle">

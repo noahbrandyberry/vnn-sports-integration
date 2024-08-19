@@ -1,12 +1,12 @@
 class Admin::TeamsController < ApplicationController
   before_action :authenticate_admin!
   before_action :require_current_school
-  before_action :set_team, only: %i[ show edit update destroy ]
-  layout 'admin'
+  before_action :set_team, only: %i[show edit update destroy]
+  layout "admin"
 
   # GET /teams or /teams.json
   def index
-    @teams = @current_school.teams.includes(:season, :players, :events)
+    @teams = @current_school.teams.where(year: selected_year_id).includes(:season, :players, :events)
   end
 
   # GET /teams/1 or /teams/1.json
@@ -61,13 +61,15 @@ class Admin::TeamsController < ApplicationController
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_team
-      @team = @current_school.teams.find(params[:id])
-    end
 
-    # Only allow a list of trusted parameters through.
-    def team_params
-      params.require(:team).permit(:name, :photo_url, :home_description, :year_id, :season_id, :level_id, :sport_id, :gender_id)
-    end
+  # Use callbacks to share common setup or constraints between actions.
+  def set_team
+    @team = @current_school.teams.find(params[:id])
+  end
+
+  # Only allow a list of trusted parameters through.
+  def team_params
+    params.require(:team).permit(:name, :photo_url, :home_description, :year_id, :season_id, :level_id, :sport_id,
+                                 :gender_id)
+  end
 end

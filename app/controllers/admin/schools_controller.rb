@@ -1,9 +1,9 @@
 class Admin::SchoolsController < ApplicationController
   before_action :authenticate_admin!
-  before_action :require_current_school, only: %i[ show edit update destroy ]
-  before_action :set_school, only: %i[ show edit update destroy ]
-  before_action :unset_school, only: %i[ index new create ]
-  layout 'admin'
+  before_action :require_current_school, only: %i[show edit update destroy]
+  before_action :set_school, only: %i[show edit update destroy]
+  before_action :unset_school, only: %i[index new create]
+  layout "admin"
 
   # GET /schools or /schools.json
   def index
@@ -13,7 +13,6 @@ class Admin::SchoolsController < ApplicationController
       format.html
       format.json { render json: @schools }
     end
-
   end
 
   # GET /schools/1 or /schools/1.json
@@ -78,14 +77,21 @@ class Admin::SchoolsController < ApplicationController
     end
   end
 
-  private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_school
-      @school = @current_school
-    end
+  def set_current_year
+    session[:year_id] = params[:year_id]
+    redirect_back fallback_location: root_path
+  end
 
-    # Only allow a list of trusted parameters through.
-    def school_params
-      params.require(:school).permit(:name, :mascot, :url, :logo_url, :primary_color, :athletic_director, :phone, :email, :instagram_url, :twitter_url, :facebook_url, location_attributes: [:id, :address_1, :address_2, :city, :state, :zip, :plus_4, :_destroy])
-    end
+  private
+
+  # Use callbacks to share common setup or constraints between actions.
+  def set_school
+    @school = @current_school
+  end
+
+  # Only allow a list of trusted parameters through.
+  def school_params
+    params.require(:school).permit(:name, :mascot, :url, :logo_url, :primary_color, :athletic_director, :phone,
+                                   :email, :instagram_url, :twitter_url, :facebook_url, location_attributes: %i[id address_1 address_2 city state zip plus_4 _destroy])
+  end
 end

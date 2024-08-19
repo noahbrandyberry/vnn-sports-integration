@@ -1,12 +1,12 @@
 class Admin::ImportSourcesController < ApplicationController
   before_action :authenticate_admin!
   before_action :require_current_school
-  before_action :set_import_source, only: %i[ show edit update destroy sync ]
-  layout 'admin'
+  before_action :set_import_source, only: %i[show edit update destroy sync]
+  layout "admin"
 
   # GET /import_sources
   def index
-    @import_sources = @current_school.import_sources
+    @import_sources = @current_school.import_sources.where(year: selected_year_id)
   end
 
   # GET /import_sources/1
@@ -27,11 +27,14 @@ class Admin::ImportSourcesController < ApplicationController
   # POST /import_sources
   def create
     @import_source = @current_school.import_sources.new(import_source_params)
+    @import_source.year_id = selected_year_id
 
     respond_to do |format|
       if @import_source.save
         ImportSourceJob.perform_later @import_source
-        format.html { redirect_to admin_import_source_url(@import_source), notice: "Import source was successfully created." }
+        format.html do
+          redirect_to admin_import_source_url(@import_source), notice: "Import source was successfully created."
+        end
       else
         format.html { render :new, status: :unprocessable_entity }
       end
@@ -43,7 +46,9 @@ class Admin::ImportSourcesController < ApplicationController
     respond_to do |format|
       if @import_source.update(import_source_params)
         ImportSourceJob.perform_later @import_source
-        format.html { redirect_to admin_import_source_url(@import_source), notice: "Import source was successfully updated." }
+        format.html do
+          redirect_to admin_import_source_url(@import_source), notice: "Import source was successfully updated."
+        end
       else
         format.html { render :edit, status: :unprocessable_entity }
       end
@@ -71,8 +76,9 @@ class Admin::ImportSourcesController < ApplicationController
   # DELETE /import_sources/1 or /import_sources/1.json
   def preview
     @import_source = @current_school.import_sources.find_by(id: params[:id])
-    @import_source = @current_school.import_sources.new unless @import_source
+    @import_source ||= @current_school.import_sources.new
     @import_source.assign_attributes(import_source_params)
+    @import_source.year_id = selected_year_id
     @import_source.preview
 
     respond_to do |format|
@@ -85,13 +91,14 @@ class Admin::ImportSourcesController < ApplicationController
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_import_source
-      @import_source = @current_school.import_sources.find(params[:id])
-    end
 
-    # Only allow a list of trusted parameters through.
-    def import_source_params
-      params.require(:import_source).permit(:name, :url, :sport_id, :gender_id, :level_id, :frequency_hours)
-    end
+  # Use callbacks to share common setup or constraints between actions.
+  def set_import_source
+    @import_source = @current_school.import_sources.find(params[:id])
+  end
+
+  # Only allow a list of trusted parameters through.
+  def import_source_params
+    params.require(:import_source).permit(:name, :url, :sport_id, :gender_id, :level_id, :frequency_hours)
+  end
 end
