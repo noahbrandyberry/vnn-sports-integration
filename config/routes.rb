@@ -1,5 +1,6 @@
 Rails.application.routes.draw do
   namespace :admin do
+    get "/", to: redirect("/admins/sign_in")
     post "import_sources/preview", to: "import_sources#preview"
     post "import_sources/:id/sync", to: "import_sources#sync", as: "import_source_sync"
     patch "schools/:id/year", to: "schools#set_current_year", as: "set_current_year"

@@ -6,6 +6,10 @@
         src="<%= team.photo_url %>"
         class="h-56 rounded-md object-cover aspect-2 mx-auto mb-4"
       />
+    <% else %>
+      <div class="h-56 rounded-md object-cover mx-auto mb-4 bg-gray-100 flex items-center justify-center">
+        <img class="h-12 w-12" src="<%= @current_school.logo_url %>" alt="<%= @current_school.name %>">
+      </div>
     <% end %>
 
     <h2 class="font-medium"><%= team.name %></h2>

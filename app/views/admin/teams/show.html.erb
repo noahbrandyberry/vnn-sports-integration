@@ -9,6 +9,10 @@
         src="<%= @team.photo_url %>"
         class="object-cover"
       />
+    <% else %>
+      <div class="object-cover bg-gray-200 flex items-center justify-center h-96">
+        <img class="h-12 w-12" src="<%= @current_school.logo_url %>" alt="<%= @current_school.name %>">
+      </div>
     <% end %>
 
     <div class="bg-white rounded shadow p-2">
