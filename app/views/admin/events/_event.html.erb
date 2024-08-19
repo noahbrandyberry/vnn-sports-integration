@@ -3,7 +3,7 @@
 
 <li class="flex justify-between gap-x-6 py-2 px-4 <%= team_event.try(:team) ? '' : 'bg-gray-100' %>">
   <div class="min-w-0 shrink-0">
-    <p class="text-sm font-semibold leading-6 <%= text_style %>"><%= event.name %></p>
+    <a href="<%= admin_team_event_path(team_id: team_event.team_id, id: event.id) %>" class="text-sm font-semibold leading-6 <%= text_style %>"><%= event.name %></a>
     <p class="text-xs leading-5 text-gray-500 <%= text_style %>"><%= event.start.in_time_zone(@current_school.timezone).strftime('%a, %b %e, %l:%M %p') %></p>
   </div>
   <div class="min-w-0 hidden flex-auto sm:flex sm:flex-col sm:items-end">

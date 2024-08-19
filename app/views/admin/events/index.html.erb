@@ -1,9 +1,7 @@
-<div class="w-full">
-  <div class="flex justify-between items-center">
-    <h1 class="font-bold text-4xl">Events</h1>
-    <%= link_to 'New event', new_admin_event_path, class: "rounded-lg py-3 px-5 bg-blue-600 text-white block font-medium" %>
-  </div>
+<% content_for :title, "Events" %>
+<% content_for :cta, (link_to 'New event', new_admin_team_event_path, class: "rounded-lg py-3 px-5 bg-primary text-white block font-medium") %>
 
+<div class="w-full">
   <div id="events" class="min-w-full">
     <%= render @events %>
   </div>
