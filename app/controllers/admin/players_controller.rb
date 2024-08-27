@@ -2,8 +2,8 @@ class Admin::PlayersController < ApplicationController
   before_action :authenticate_admin!
   before_action :require_current_school
   before_action :set_team
-  before_action :set_player, only: %i[ show edit update destroy ]
-  layout 'admin'
+  before_action :set_player, only: %i[show edit update destroy]
+  layout "admin"
 
   # GET /players
   def index
@@ -26,6 +26,7 @@ class Admin::PlayersController < ApplicationController
   # POST /players
   def create
     @player = @team.players.build(player_params)
+    @player.custom = true
 
     respond_to do |format|
       if @player.save
@@ -39,9 +40,14 @@ class Admin::PlayersController < ApplicationController
 
   # PATCH/PUT /players/1
   def update
+    @player.assign_attributes(player_params)
+    @player.custom = true
+
     respond_to do |format|
-      if @player.update(player_params)
-        format.html { redirect_to admin_team_player_url(@team, @player), notice: "Player was successfully updated." }
+      if @player.save
+        format.html do
+          redirect_to admin_team_player_url(@team, @player), notice: "Player was successfully updated."
+        end
       else
         format.html { render :edit, status: :unprocessable_entity }
       end
@@ -59,17 +65,18 @@ class Admin::PlayersController < ApplicationController
   end
 
   private
-    def set_team
-      @team = @current_school.teams.find(params[:team_id])
-    end
 
-    # Use callbacks to share common setup or constraints between actions.
-    def set_player
-      @player = @team.players.find(params[:id])
-    end
+  def set_team
+    @team = @current_school.teams.find(params[:team_id])
+  end
 
-    # Only allow a list of trusted parameters through.
-    def player_params
-      params.require(:player).permit(:first_name, :last_name, :grad_year, :jersey, :position, :height, :weight)
-    end
+  # Use callbacks to share common setup or constraints between actions.
+  def set_player
+    @player = @team.players.find(params[:id])
+  end
+
+  # Only allow a list of trusted parameters through.
+  def player_params
+    params.require(:player).permit(:first_name, :last_name, :grad_year, :jersey, :position, :height, :weight)
+  end
 end

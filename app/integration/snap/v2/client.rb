@@ -344,12 +344,19 @@ module Snap
         s = r.data.manage_organization
 
         existing_school = School.find_by(id: "snap2-#{s.school_id}")
+        custom_players = {}
+        admin_ids = existing_school.try(:admin_ids)
 
         if existing_school
           existing_school.teams.map do |team|
             team.pressbox_posts.destroy_all
             team.images.destroy_all
-            team.players.destroy_all
+            custom_team_players = team.players.where(custom: true)
+            if custom_team_players.count.positive?
+              custom_players[team.id] = custom_team_players.pluck(:id)
+              custom_team_players.update_all(team_id: nil)
+            end
+            team.players.reload.destroy_all
 
             team.events.each do |event|
               event.team_results.destroy_all
@@ -568,6 +575,11 @@ module Snap
         )
 
         school.save
+
+        school.update(admin_ids: admin_ids)
+        custom_players.each do |team_id, players_ids|
+          Player.where(id: players_ids).update_all(team_id: team_id)
+        end
       end
     end
   end
