@@ -22,6 +22,11 @@ Rails.application.routes.draw do
 
   namespace :api do
     namespace :v1 do
+      get "teams", to: "teams#teams_by_ids"
+      get "live_games", to: "teams#live_games"
+      get "recent_results", to: "teams#recent_results"
+      get "upcoming_events", to: "teams#upcoming_events"
+
       resources :devices
       get "schools/:id/upcoming_events", to: "schools#upcoming_events"
       get "schools/:id/recent_results", to: "schools#recent_results"

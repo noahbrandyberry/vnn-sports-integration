@@ -31,17 +31,17 @@ end
 
 desc "import from snap"
 task import_snap_schools: :environment do
-  # slug = "import-snap-schools"
-  # check_in_id = Sentry.capture_check_in(slug, :in_progress)
+  slug = "import-snap-schools"
+  check_in_id = Sentry.capture_check_in(slug, :in_progress)
 
-  # begin
-  ENV["SNAP_SCHOOL_IDS"].split(", ").each do |school_id|
-    puts "importing #{school_id}"
-    Snap::V2::Client.import(school_id)
+  begin
+    ENV["SNAP_SCHOOL_IDS"].split(", ").each do |school_id|
+      puts "importing #{school_id}"
+      Snap::V2::Client.import(school_id)
+    end
+    puts "schools updated!"
+    Sentry.capture_check_in(slug, :ok, check_in_id: check_in_id)
+  rescue StandardError
+    Sentry.capture_check_in(slug, :error, check_in_id: check_in_id)
   end
-  puts "schools updated!"
-  #   Sentry.capture_check_in(slug, :ok, check_in_id: check_in_id)
-  # rescue StandardError
-  #   Sentry.capture_check_in(slug, :error, check_in_id: check_in_id)
-  # end
 end

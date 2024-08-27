@@ -1,6 +1,6 @@
 class Api::V1::SchoolsController < ApplicationController
   protect_from_forgery with: :null_session
-  before_action :set_school, only: %i[ show upcoming_events recent_results ]
+  before_action :set_school, only: %i[show upcoming_events recent_results]
 
   # GET /schools
   # GET /schools.json
@@ -21,8 +21,9 @@ class Api::V1::SchoolsController < ApplicationController
     @teams = @teams.where(gender_id: params[:gender_id]) if params[:gender_id].present?
     @teams = @teams.where(sport_id: params[:sport_id]) if params[:sport_id].present?
     @teams = @teams.where(id: params[:team_id]) if params[:team_id].present?
-    event_ids = @teams.map{|team| team.team_events.map(&:event_id)}.flatten.uniq
-    @events = Event.where(id: event_ids).includes(team_results: [:team]).includes(:result, :teams, :location, :team_events).uniq
+    event_ids = @teams.map { |team| team.team_events.map(&:event_id) }.flatten.uniq
+    @events = Event.where(id: event_ids).includes(team_results: [:team]).includes(:result, :teams, :location,
+                                                                                  :team_events).uniq
 
     respond_to do |format|
       format.json
@@ -30,9 +31,9 @@ class Api::V1::SchoolsController < ApplicationController
         @calendar = Icalendar::Calendar.new
         calendar_name = @teams.count == 1 ? "#{@teams.first.name} Events" : "#{@school} Events"
         @calendar.append_custom_property("X-WR-CALNAME", calendar_name)
-        @calendar.append_custom_property('X-APPLE-CALENDAR-COLOR', @school.primary_color)
+        @calendar.append_custom_property("X-APPLE-CALENDAR-COLOR", @school.primary_color)
         @events.each do |e|
-          start = e.start.in_time_zone(e.location.try(:timezone) || 'America/New_York')
+          start = e.start.in_time_zone(e.location.try(:timezone) || "America/New_York")
           team = @teams.to_a.intersection(e.teams).first
           opponent_name = e.team_events.to_a.find { |team_event| team_event.team_id === team.id }.try(:opponent_name)
           opponents = e.teams - [team]
@@ -65,17 +66,21 @@ class Api::V1::SchoolsController < ApplicationController
   def recent_results
     @teams = @school.current_teams
     @teams = @teams.where(id: params[:team_id]) if params[:team_id].present?
-    @events = @teams.map{|team| team.events.includes(:result).where(start: 2.week.ago..Time.now).where.not(result: {id: nil}).last(1)}.flatten.uniq
+    @events = @teams.map do |team|
+      team.events.includes(:result).where(start: 2.week.ago..Time.now).where.not(result: { id: nil }).last(1)
+    end.flatten.uniq
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_school
-      @school = School.find(params[:id])
-    end
 
-    # Only allow a list of trusted parameters through.
-    def school_params
-      params.require(:school).permit(:name, :mascot, :is_vnn, :url, :logo_url, :anti_discrimination_disclaimer, :registration_text, :registration_url, :primary_color, :secondary_color, :tertiary_color, :enrollment, :athletic_director, :phone, :email, :blog, :sportshub_version, :version, :instagram, :onboarding)
-    end
+  # Use callbacks to share common setup or constraints between actions.
+  def set_school
+    @school = School.find(params[:id])
+  end
+
+  # Only allow a list of trusted parameters through.
+  def school_params
+    params.require(:school).permit(:name, :mascot, :is_vnn, :url, :logo_url, :anti_discrimination_disclaimer,
+                                   :registration_text, :registration_url, :primary_color, :secondary_color, :tertiary_color, :enrollment, :athletic_director, :phone, :email, :blog, :sportshub_version, :version, :instagram, :onboarding)
+  end
 end
