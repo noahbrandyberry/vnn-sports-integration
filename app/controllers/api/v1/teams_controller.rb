@@ -14,7 +14,7 @@ class Api::V1::TeamsController < ApplicationController
   def live_games
     @teams = Team.where(id: params[:team_id])
     @events = @teams.map do |team|
-      [team, team.events.includes(:result).where(start: 2.hours.ago..1.hour.from_now).first]
+      [team, team.events.includes(:result).where(start: 4.hours.ago..20.hour.from_now).first]
     end
   end
 
