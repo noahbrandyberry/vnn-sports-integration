@@ -13,7 +13,7 @@ module Snap
       Schema = GraphQL::Client.load_schema(HTTP)
 
       Client = GraphQL::Client.new(schema: Schema, execute: HTTP)
-      Query = Client.parse <<~'GRAPHQL'
+      Query = Client.parse <<~GRAPHQL
         query {
           manageOrganization {
             webFolder
@@ -66,7 +66,7 @@ module Snap
                 isDeleted
                 seasonYearsForProgram
                 seasonsForProgram(
-                  filter: { where: { year: "2024-2025", isDeleted: false } }
+                  filter: { where: { year: "#{Year.last.name.tr("/", "-")}", isDeleted: false } }
                 ) {
                   count
                   list {
