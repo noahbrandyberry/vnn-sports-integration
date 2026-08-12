@@ -17,63 +17,22 @@ module Snap
         query {
           manageOrganization {
             webFolder
-            dbFolder
             path
             schoolId
-            linkSchoolId
-            lKschoolId
-            adReport
             schoolName
-            sqlBase
-            lat
-            long
             address
             city
             state
             zip
             phone
-            fax
-            stateOrg
-            iCon
-            mascot
-            ad
-            principal
             logo
-            siteType
-            webSite
-            featured
             show
-            message
             adSchool
-            feederTowns
-            signUpCode
             color1
             color2
-            massUpdate
-            registrationPolicy
-            campRegConfirmationTxt
-            sportRegConfirmationTxt
-            registrationEmail
-            registrationType
-            registrationEnabled
-            emailBlastEnabled
-            staffCalendarEnabled
-            showTeamPagesFirst
-            autoApproveScoreOnly
-            webPassword
-            oldSchoolId
-            psSchoolId
-            psStoreActive
-            masterSchoolId
-            hasMigratedFromAccessToSqlServer
-            hasAotm
             hasRegistration
             hasActivities
             hasAthletics
-            aotmSpotlight
-            emailSpotlight
-            gallerySpotlight
-            hasEmailBlast
             motto
             facebookUrl
             hasFacebookUrl
@@ -81,21 +40,14 @@ module Snap
             hasTwitterUrl
             instagramUrl
             hasInstagramUrl
-            showSchoolNameAndMotto
-            equipmentEnabled
             customLabel
             customLink
             customLabel2
             customLink2
-            timeZone
-            adProgramID
-            showAd
             conferenceName
             conferenceURL
-            ncesId
             registrationUrl
             schoolWebsiteUrl
-            fuelMyClubLink
             programsForOrganization {
               count
               list {
@@ -121,13 +73,6 @@ module Snap
                     seasonId
                     sportCode
                     year
-                    season
-                    homeField
-                    preview
-                    webPassword
-                    budget
-                    defaultTimeForPractice
-                    defaultTimeForEvent
                     isDeleted
                     eventsForSeason(
                       filter: {
@@ -138,104 +83,38 @@ module Snap
                       count
                       list {
                         eventId
-                        years
                         endTime
                         place
-                        seasonTeam
                         activity
                         eventDate
                         location
-                        opponentCode
                         opponent
-                        transportation
-                        transId
                         confirmed
-                        rollover
                         gs
                         startTime
                         busTime
-                        conference
-                        contract
-                        numBuses
                         comments
-                        tournament
-                        fee
-                        results
-                        lead
                         title
-                        headline
-                        picture
-                        promote
-                        directions
-                        webDir
-                        conferenceId
-                        prepSetup
-                        impactEvent
-                        busFee
-                        revenue
-                        gateRevenue
-                        winPoints
-                        lossPoints
-                        earlyDismissalRequired
-                        earlyDismissalTime
                         estimatedReturnTime
                         departureLocation
                         transportComments
-                        conferenceEventId
                         cancellationStatus
-                        existsInMls
-                        createdAt
-                        updatedAt
                         gender
-                        eventType
                         directionLink
-                        teamName
-                        eventDetailsPath
                         eventDay
                         groupVal
-                        season
-                        sortStartTime
-                        eventResultID
                         outcome
                         teamScore
                         opponentScore
-                        eventComplete
-                        showFrontPage
-                        reportScore
-                        reportStory
                         eventStory
-                        eventLead
-                        eventTitle
-                        author
-                        isApproved
-                        updateResultDate
-                        createdResultAt
-                        updatedResultAt
-                        createdResultBy
-                        updatedResultBy
                         eventDateTime
                         level
                         eventResults {
                           id
-                          event_id
-                          school_id
                           outcome
                           score
                           opponent_score
-                          event_complete
-                          on_front_page
-                          report_score
-                          report_story
-                          event_story
-                          event_lead
                           event_title
-                          event_date
-                          author
-                          is_approved
-                          created_at
-                          updated_at
-                          created_by
-                          updated_by
                         }
                       }
                     }
@@ -243,15 +122,10 @@ module Snap
                       count
                       list {
                         coachId
-                        adId
-                        schoolId
-                        seasonId
                         firstName
                         lastName
                         title
                         summary
-                        headCoach
-                        isApproved
                         photoId
                         createdAt
                         updatedAt
@@ -270,39 +144,6 @@ module Snap
                         weight
                         gradYear
                         participantId
-                        sortJersey
-                        rosterId
-                        schoolId
-                        seasonId
-                        feePaid
-                        permission
-                        physical
-                        ch1
-                        ch2
-                        ch3
-                        status
-                        gender
-                        dob
-                        studentId
-                        stAddress
-                        city
-                        state
-                        zip
-                        homePhone
-                        dayPhone
-                        physicalDate
-                        custodyCode
-                        livesWithCode
-                        noPress
-                        physician
-                        physicianTelephone
-                        insuranceCompany
-                        insurancePolicyNum
-                        preferredHospital
-                        hospitalPhone
-                        shirtsize
-                        shortsize
-                        hatsize
                       }
                     }
                   }
@@ -311,26 +152,11 @@ module Snap
                   count
                   list {
                     id
-                    image
-                    filename
-                    companyId
-                    projectId
                     src
-                    school
-                    sport
                     caption
                     title
                     group
-                    rphoto
-                    level
-                    batch
                     needsApproval
-                    recordStatus
-                    layout
-                    createdAt
-                    updatedAt
-                    createdBy
-                    updatedBy
                   }
                 }
               }
@@ -381,8 +207,6 @@ module Snap
           city: s.city,
           state: s.state,
           zip: s.zip,
-          latitude: s.lat,
-          longitude: s.long
         )
 
         location.geocode
@@ -398,7 +222,7 @@ module Snap
         school = School.new(
           id: "snap2-#{s.school_id}",
           name: s.school_name,
-          mascot: s.mascot,
+          mascot: nil,
           is_vnn: false,
           url: "https://schools.snap.app/#{s.path}",
           primary_color: s.color1,
@@ -422,9 +246,7 @@ module Snap
                    name = [gender_record, level_record, sport_record].compact.join(" ")
 
                    year_record = Year.find_by(name: season.year.gsub("-", "/"))
-                   season_record = seasons.select do |se|
-                     season.season&.include?(se.name)
-                   end.first || Sport.find_by(name: program.sport_name.split.first).try(:season) || sport_record.season || Season.find_by(name: "Year-round")
+                   season_record = Sport.find_by(name: program.sport_name.split.first).try(:season) || sport_record.season || Season.find_by(name: "Year-round")
 
                    Team.new(
                      id: "snap2-#{s.school_id}-#{season.season_id}",
@@ -448,7 +270,7 @@ module Snap
                      images: program.photos_for_programs.list.map do |photo|
                        Image.new(
                          id: "snap2-#{s.school_id}-#{photo.id}",
-                         description: photo.filename,
+                         description: photo.title.presence || photo.caption,
                          url: photo.src
                        )
                      end,
@@ -526,16 +348,16 @@ module Snap
 
                        has_result = result&.score&.match(/^(\d)+$/) && result.opponent_score.match(/^(\d)+$/)
                        has_team_result = result&.score&.include?("Place")
-                       has_post = result && result.event_story.present?
+                       has_post = event.event_story.present?
 
                        TeamEvent.new(home: home, opponent_name: event.opponent, event:
                         Event.new(
                           id: "snap2-#{s.school_id}-#{season.season_id}-#{event.event_id}",
                           name: event.activity || event.opponent,
-                          event_type: event.event_type.try(:downcase),
+                          event_type: nil,
                           start: start,
                           tba: tba,
-                          conference: event.conference == "Y",
+                          conference: false,
                           scrimmage: event.activity.try(:include?, "Scrimmage"),
                           canceled: event.cancellation_status == "1",
                           location: new_location_record,
@@ -560,7 +382,7 @@ module Snap
                                                 id: "snap2-#{s.school_id}-#{season.season_id}-#{event.event_id}",
                                                 team_id: "snap2-#{s.school_id}-#{season.season_id}",
                                                 title: event.activity || event.opponent,
-                                                recap: { Summary: result.event_story }.to_json,
+                                                recap: { Summary: event.event_story }.to_json,
                                                 created: start,
                                                 is_visible: true
                                               )

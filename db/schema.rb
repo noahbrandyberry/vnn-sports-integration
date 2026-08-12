@@ -168,7 +168,7 @@ ActiveRecord::Schema[7.0].define(version: 2024_08_27_164625) do
     t.string "team_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.boolean "custom", default: false
+    t.boolean "custom", default: false, null: false
     t.index ["team_id"], name: "index_players_on_team_id"
   end
 
