@@ -1,5 +1,6 @@
 class Season < ApplicationRecord
   has_many :teams
+  has_many :sports
 
   def self.find_or_create_from_api result
     season = find_by id: result['id']
