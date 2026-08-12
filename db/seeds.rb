@@ -6,6 +6,10 @@ Year.create({ "name" => "2023/2024", "start" => "Sat, 01 Jul 2023 00:00:00.00000
               "end" => "Sun, 30 Jun 2024 23:59:59.000000000 UTC +00:00" })
 Year.create({ "name" => "2024/2025", "start" => "Mon, 01 Jul 2024 00:00:00.000000000 UTC +00:00",
               "end" => "Mon, 30 Jun 2025 23:59:59.000000000 UTC +00:00" })
+Year.create({ "name" => "2025/2026", "start" => "Tue, 01 Jul 2025 00:00:00.000000000 UTC +00:00",
+              "end" => "Tue, 30 Jun 2026 23:59:59.000000000 UTC +00:00" })
+Year.create({ "name" => "2026/2027", "start" => "Wed, 01 Jul 2026 00:00:00.000000000 UTC +00:00",
+              "end" => "Wed, 30 Jun 2027 23:59:59.000000000 UTC +00:00" })
 
 Season.create({ "name" => "Spring", "start" => "Tue, 01 Feb 0000 00:00:00.000000000 UTC +00:00",
                 "end" => "Fri, 30 Jun 0000 00:00:00.000000000 UTC +00:00" })
