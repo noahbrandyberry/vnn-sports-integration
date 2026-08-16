@@ -1,0 +1,25 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+# Keep Rpush on the existing web dyno so it shares the dyno already serving
+# Rails. `-f` keeps it in the foreground; this script supervises both processes.
+bundle exec rpush start -e "${RACK_ENV:-production}" -f &
+rpush_pid=$!
+
+stop() {
+  kill -TERM "$rpush_pid" 2>/dev/null || true
+  wait "$rpush_pid" 2>/dev/null || true
+}
+
+trap 'stop; exit 0' TERM INT
+
+bin/rails server -p "${PORT:-5000}" -e "${RAILS_ENV:-production}" &
+web_pid=$!
+
+if wait "$web_pid"; then
+  web_status=0
+else
+  web_status=$?
+fi
+stop
+exit "$web_status"
